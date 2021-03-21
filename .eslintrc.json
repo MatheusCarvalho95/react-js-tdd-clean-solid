@@ -6,9 +6,11 @@
   "rules": {
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/sctrict-boolean-expressions": "off",
+    "@typescript-eslint/member-delimiter-style": "off",
     "semi": "off",
     "@typescript-eslint/quotes": "off",
     "quotes": "off",
-    "comma-dangle": "off"
+    "comma-dangle": "off",
+    "@typescript-eslint/camelcase": "off"
   }
 }
