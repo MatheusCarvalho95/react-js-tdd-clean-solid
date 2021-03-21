@@ -2,7 +2,7 @@ import AccountModel from "../models/account-model";
 
 type AuthenticationParams = {
   email: string;
-  passwortd: string;
+  password: string;
 };
 
 export interface Authentication {
