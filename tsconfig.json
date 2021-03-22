@@ -5,8 +5,6 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "strict": true,
-    "strictNullChecks": true,
     "jsx": "react",
     "rootDir": "src",
     "baseUrl": "src",
