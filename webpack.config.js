@@ -9,10 +9,36 @@ module.exports = {
     fileName: "bundle.js",
   },
   resolve: {
-    extesions: [".ts", ".tsx", ".js"],
+    extesions: [".ts", ".tsx", ".js", "scss", "css"],
     alias: {
       "@": path.join(__dirname, "src"),
     },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.ts(x?)$/,
+        loader: "ts-loader",
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: "styled-loader",
+          },
+          {
+            loader: "css-loader",
+            options: {
+              modules: true,
+            },
+          },
+          {
+            loader: "sass-loader",
+          },
+        ],
+      },
+    ],
   },
   devServer: {
     contentBase: "./public",
