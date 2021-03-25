@@ -1,9 +1,9 @@
+import React from "react";
 import Header from "@/presentation/components/login/header";
 import Footer from "@/presentation/components/footer";
-import React from "react";
-import Styles from "./login-styles.scss";
 import Input from "@/presentation/components/input";
 import FormStatus from "@/presentation/components/formStatus";
+import Styles from "./styles.scss";
 
 const Login: React.FC = () => {
   return (
