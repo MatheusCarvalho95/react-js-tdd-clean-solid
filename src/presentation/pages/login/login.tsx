@@ -1,5 +1,6 @@
-import Loading from "@/presentation/components/loading/loading";
-import Logo from "@/presentation/components/logo";
+import Loading from "@/presentation/components/loading";
+import Header from "@/presentation/components/login/header";
+import Footer from "@/presentation/components/footer";
 import React from "react";
 import Styles from "./login-styles.scss";
 
@@ -7,12 +8,7 @@ const Login: React.FC = () => {
   const error = "Erro qualquer";
   return (
     <div className={Styles.login}>
-      <header className={Styles.header}>
-        <div className={Styles.img}>
-          <Logo />
-        </div>
-        <h1>4Dev - Enquetes para Programadores</h1>
-      </header>
+      <Header />
       <form className={Styles.form}>
         <h2>Login</h2>
         <div className={Styles.inputContainer}>
@@ -37,7 +33,7 @@ const Login: React.FC = () => {
           <span className={Styles.statusError}>{error}</span>
         </div>
       </form>
-      <footer className={Styles.footer}></footer>
+      <Footer />
     </div>
   );
 };
