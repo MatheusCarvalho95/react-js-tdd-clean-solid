@@ -6,10 +6,10 @@ module.exports = {
   output: {
     path: path.join(__dirname, "public/js"),
     publicPath: "/public/js",
-    fileName: "bundle.js",
+    filename: "bundle.js",
   },
   resolve: {
-    extesions: [".ts", ".tsx", ".js", "scss", "css"],
+    extensions: [".ts", ".tsx", ".js", "scss", "css"],
     alias: {
       "@": path.join(__dirname, "src"),
     },
@@ -25,7 +25,7 @@ module.exports = {
         test: /\.scss$/,
         use: [
           {
-            loader: "styled-loader",
+            loader: "style-loader",
           },
           {
             loader: "css-loader",
@@ -43,7 +43,7 @@ module.exports = {
   devServer: {
     contentBase: "./public",
     writeToDisk: true,
-    historyApiFallBack: true,
+    historyApiFallback: true,
   },
   externals: {
     react: "React",
