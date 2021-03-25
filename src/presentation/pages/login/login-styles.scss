@@ -66,17 +66,5 @@ button {
         text-decoration: underline;
       }
     }
-    .statusContainer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      .loading {
-        margin-top: 30px;
-      }
-      .statusError {
-        margin-top: 30px;
-        color: $primaryLight;
-      }
-    }
   }
 }
