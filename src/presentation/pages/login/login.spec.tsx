@@ -4,6 +4,8 @@ import Login from "./index";
 
 describe("Login component", () => {
   test("", () => {
-    render(<Login />);
+    const { getByTestId } = render(<Login />);
+    const status = getByTestId("status-container");
+    expect(status.childElementCount).toBe(0);
   });
 });
