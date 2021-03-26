@@ -86,15 +86,15 @@ describe("RemoteAuthentication", () => {
   });
 });
 
-describe("RemoteAuthentication", () => {
-  test("Should return an AccountModel if HttpPostClient returns 200", async () => {
-    const { sut, httpPostClientSpy } = makeSut();
-    const httpResult = mockAccountModel();
-    httpPostClientSpy.response = {
-      statusCode: HttpStatusCode.ok,
-      body: httpResult,
-    };
-    const account = await sut.auth(mockAuthentication());
-    await expect(account).toEqual(httpResult);
-  });
-});
+// describe("RemoteAuthentication", () => {
+//   test("Should return an AccountModel if HttpPostClient returns 200", async () => {
+//     const { sut, httpPostClientSpy } = makeSut();
+//     const httpResult = mockAccountModel();
+//     httpPostClientSpy.response = {
+//       statusCode: HttpStatusCode.ok,
+//       body: httpResult,
+//     };
+//     const account = await sut.auth(mockAuthentication());
+//     await expect(account).toEqual(httpResult);
+//   });
+// });
