@@ -10,6 +10,7 @@ const Input: React.FC<Props> = (props: Props) => {
   const enableDataInput = (e: React.FocusEvent<HTMLInputElement>): void => {
     e.target.readOnly = false;
   };
+
   return (
     <div className={Styles.inputContainer}>
       <input {...props} readOnly onFocus={enableDataInput} />

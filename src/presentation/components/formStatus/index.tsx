@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import Loading from "../loading";
 import Styles from "./styles.scss";
+import Context, { StateProps } from "../context/form";
 
 const FormStatus: React.FC = () => {
+  const { isLoading, errorMessage } = useContext<StateProps>(Context);
   return (
-    <div className={Styles.statusContainer}>
-      <Loading className={Styles.loading} />
-      <span className={Styles.statusError}>Algum Erro</span>
+    <div data-testid="status-container" className={Styles.statusContainer}>
+      {isLoading && <Loading className={Styles.loading} />}
+      {errorMessage && !isLoading && (
+        <span className={Styles.statusError}>{errorMessage}</span>
+      )}
     </div>
   );
 };
