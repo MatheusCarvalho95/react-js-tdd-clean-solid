@@ -7,7 +7,7 @@ import Styles from "./styles.scss";
 import Context, { StateProps } from "../../components/context/form";
 
 const Login: React.FC = () => {
-  const [status, setStatus] = useState<StateProps>({
+  const [status] = useState<StateProps>({
     isLoading: false,
   });
   return (
@@ -22,7 +22,12 @@ const Login: React.FC = () => {
             name="password"
             placeholder="Digite sua senha"
           />
-          <button type="submit" className={Styles.submitButton}>
+          <button
+            type="submit"
+            data-testid="submitButton"
+            className={Styles.submitButton}
+            disabled
+          >
             Entrar
           </button>
           <span className={Styles.signUpLink}>Cadastre-se</span>
