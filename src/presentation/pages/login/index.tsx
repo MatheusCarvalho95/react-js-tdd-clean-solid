@@ -9,6 +9,8 @@ import Context, { StateProps } from "../../components/context/form";
 const Login: React.FC = () => {
   const [status] = useState<StateProps>({
     isLoading: false,
+    emailError: "Campo obrigatório",
+    passwordError: "Campo obrigatório",
   });
   return (
     <div className={Styles.login}>
