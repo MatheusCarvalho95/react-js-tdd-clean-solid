@@ -10,10 +10,16 @@ const Input: React.FC<Props> = (props: Props) => {
   const enableDataInput = (e: React.FocusEvent<HTMLInputElement>): void => {
     e.target.readOnly = false;
   };
-  const contextValue = useContext<any>(FormContext);
+  const { status, setStatus } = useContext(FormContext);
 
-  const error = contextValue[`${props.name}Error`];
+  const error = status[`${props.name}Error`];
 
+  const handleOnChange = (e: React.FocusEvent<HTMLInputElement>): void => {
+    setStatus({
+      ...status,
+      [e?.target?.name]: e?.target?.value,
+    });
+  };
   const getStatus = (): string => {
     return "🔴";
   };
@@ -24,7 +30,13 @@ const Input: React.FC<Props> = (props: Props) => {
 
   return (
     <div className={Styles.inputContainer}>
-      <input {...props} readOnly onFocus={enableDataInput} />
+      <input
+        {...props}
+        data-testid={`${props.name}`}
+        readOnly
+        onFocus={enableDataInput}
+        onChange={handleOnChange}
+      />
       <span
         data-testid={`${props.name}-status`}
         title={getTitle()}
