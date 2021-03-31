@@ -1,10 +1,20 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, RenderResult } from "@testing-library/react";
 import Login from "./index";
+
+type SutTypes = {
+  sut: RenderResult;
+};
+
+const makeSut = (): SutTypes => {
+  const sut = render(<Login />);
+  return { sut };
+};
 
 describe("Login component", () => {
   test("Should start with inicial state ", () => {
-    const { getByTestId } = render(<Login />);
+    const { sut } = makeSut();
+    const { getByTestId } = sut;
 
     const status = getByTestId("status-container");
     expect(status.childElementCount).toBe(0);
