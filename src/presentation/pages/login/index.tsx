@@ -18,11 +18,16 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
     passwordError: "Campo obrigatório",
     email: "",
     errorMessage: "",
+    password: "",
   });
 
   useEffect(() => {
     validation.validate({ email: status.email });
   }, [status.email]);
+
+  useEffect(() => {
+    validation.validate({ password: status.password });
+  }, [status.password]);
 
   return (
     <div className={Styles.login}>
