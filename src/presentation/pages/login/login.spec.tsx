@@ -16,13 +16,14 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy();
+  validationSpy.errorMessage = faker.random.words();
   const sut = render(<Login validation={validationSpy} />);
   return { sut, validationSpy };
 };
 
 describe("Login component", () => {
   test("Should start with inicial state ", () => {
-    const { sut } = makeSut();
+    const { sut, validationSpy } = makeSut();
     const { getByTestId } = sut;
 
     const status = getByTestId("status-container");
@@ -32,7 +33,7 @@ describe("Login component", () => {
     expect(submitButton.disabled).toBe(true);
 
     const emailStatus = getByTestId("email-status");
-    expect(emailStatus.title).toBe("Campo obrigatório");
+    expect(emailStatus.title).toBe(validationSpy.errorMessage);
     expect(emailStatus.textContent).toBe("🔴");
 
     const passwordStatus = getByTestId("password-status");
@@ -47,7 +48,7 @@ describe("Login component", () => {
     const email = faker.internet.email();
     fireEvent.input(emailInput, { target: { value: email } });
     expect(validationSpy.fieldName).toBe("email");
-    expect(validationSpy.fieldValue).toBe("any_email");
+    expect(validationSpy.fieldValue).toBe(email);
   });
 
   test("Should call validation with correct password", () => {
@@ -57,6 +58,16 @@ describe("Login component", () => {
     const password = faker.internet.password();
     fireEvent.input(passwordInput, { target: { value: password } });
     expect(validationSpy.fieldName).toBe("password");
-    expect(validationSpy.fieldValue).toBe("any_password");
+    expect(validationSpy.fieldValue).toBe(password);
+  });
+
+  test("Should show email error message if validation fails", () => {
+    const { sut, validationSpy } = makeSut();
+    const { getByTestId } = sut;
+    const emailInput = getByTestId("email");
+    fireEvent.input(emailInput, { target: { value: faker.internet.email() } });
+    const emailStatus = getByTestId("email-status");
+    expect(emailStatus.title).toBe(validationSpy.errorMessage);
+    expect(emailStatus.textContent).toBe("🔴");
   });
 });
