@@ -4,12 +4,12 @@ import Styles from "./styles.scss";
 import Context from "../context/form";
 
 const FormStatus: React.FC = () => {
-  const { isLoading, errorMessage } = useContext(Context);
+  const { status } = useContext(Context);
   return (
     <div data-testid="status-container" className={Styles.statusContainer}>
-      {isLoading && <Loading className={Styles.loading} />}
-      {errorMessage && !isLoading && (
-        <span className={Styles.statusError}>{errorMessage}</span>
+      {status.isLoading && <Loading className={Styles.loading} />}
+      {status.errorMessage && (
+        <span className={Styles.statusError}>{status.errorMessage}</span>
       )}
     </div>
   );

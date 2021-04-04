@@ -3,7 +3,11 @@ import Styles from "./styles.scss";
 type Props = React.AllHTMLAttributes<HTMLElement>;
 const Loading: React.FC<Props> = (props: Props) => {
   return (
-    <div {...props} className={[Styles.loading, props.className].join(" ")}>
+    <div
+      {...props}
+      data-testid="spinner"
+      className={[Styles.loading, props.className].join(" ")}
+    >
       <div></div>
       <div></div>
       <div></div>
