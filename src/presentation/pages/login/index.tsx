@@ -22,11 +22,11 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
   });
 
   useEffect(() => {
-    validation.validate({ email: status.email });
+    validation.validate("email", status.email);
   }, [status.email]);
 
   useEffect(() => {
-    validation.validate({ password: status.password });
+    validation.validate("password", status.password);
   }, [status.password]);
 
   return (
