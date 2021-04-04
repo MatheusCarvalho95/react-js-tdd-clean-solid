@@ -112,4 +112,23 @@ describe("Login component", () => {
     const submitButton = getByTestId("submitButton") as HTMLButtonElement;
     expect(submitButton.disabled).toBe(false);
   });
+
+  test("Should show loading if form is submited", async () => {
+    const { sut } = makeSut();
+    const { getByTestId } = sut;
+    const passwordInput = getByTestId("password");
+    fireEvent.input(passwordInput, {
+      target: { value: faker.internet.password() },
+    });
+
+    const emailInput = getByTestId("email");
+    fireEvent.input(emailInput, {
+      target: { value: faker.internet.email() },
+    });
+
+    const submitButton = getByTestId("submitButton");
+    fireEvent.click(submitButton);
+    const loading = getByTestId("spinner");
+    expect(loading).toBeTruthy();
+  });
 });
