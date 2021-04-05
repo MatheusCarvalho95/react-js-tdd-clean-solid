@@ -9,7 +9,9 @@ const FormStatus: React.FC = () => {
     <div data-testid="status-container" className={Styles.statusContainer}>
       {status.isLoading && <Loading className={Styles.loading} />}
       {status.errorMessage && (
-        <span className={Styles.statusError}>{status.errorMessage}</span>
+        <span data-testid="main-error" className={Styles.statusError}>
+          {status.errorMessage}
+        </span>
       )}
     </div>
   );

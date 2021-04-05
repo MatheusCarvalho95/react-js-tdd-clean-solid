@@ -35,12 +35,16 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     event: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     event.preventDefault();
-    if (!status.isLoading && !status.emailError && !status.passwordError) {
-      setStatus({ ...status, isLoading: true });
-      await authentication.auth({
-        email: status.email,
-        password: status.password,
-      });
+    try {
+      if (!status.isLoading && !status.emailError && !status.passwordError) {
+        setStatus({ ...status, isLoading: true });
+        await authentication.auth({
+          email: status.email,
+          password: status.password,
+        });
+      }
+    } catch (error) {
+      setStatus({ ...status, isLoading: false, errorMessage: error.message });
     }
   };
 
