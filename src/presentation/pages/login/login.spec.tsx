@@ -22,7 +22,7 @@ type SutTypes = {
 type SutParams = {
   validationError: string;
 };
-const history = createMemoryHistory();
+const history = createMemoryHistory({ initialEntries: ["/login"] });
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   const authenticationSpy = new AuthenticationSpy();
@@ -223,6 +223,10 @@ describe("Login component", () => {
       "accessToken",
       authenticationSpy.account.accessToken,
     );
+
+    expect(history.length).toBe(1);
+
+    expect(history.location.pathname).toBe("/");
   });
 
   test("Should navigate to sign up page", async () => {
@@ -232,7 +236,9 @@ describe("Login component", () => {
     const registerButton = getByTestId("register-button");
 
     fireEvent.click(registerButton);
+
     expect(history.length).toBe(2);
+
     expect(history.location.pathname).toBe("/signup");
   });
 });
