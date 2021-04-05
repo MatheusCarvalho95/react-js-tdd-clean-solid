@@ -38,10 +38,11 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     try {
       if (!status.isLoading && !status.emailError && !status.passwordError) {
         setStatus({ ...status, isLoading: true });
-        await authentication.auth({
+        const account = await authentication.auth({
           email: status.email,
           password: status.password,
         });
+        localStorage.setItem("accessToken", account.accessToken);
       }
     } catch (error) {
       setStatus({ ...status, isLoading: false, errorMessage: error.message });
