@@ -158,11 +158,23 @@ describe("Login component", () => {
     });
   });
 
-  test("Should calll authetication only once", async () => {
+  test("Should call authetication only once", async () => {
     const { sut, authenticationSpy } = makeSut();
 
     simulateValidSubmit(sut);
     simulateValidSubmit(sut);
     expect(authenticationSpy.callsCount).toBe(1);
+  });
+
+  test("Should call authetication if invalid form", async () => {
+    const validationError = faker.random.words();
+
+    const { sut, authenticationSpy } = makeSut({ validationError });
+
+    fillEmailField(sut);
+
+    fireEvent.submit(sut.getByTestId("form"));
+
+    expect(authenticationSpy.callsCount).toBe(0);
   });
 });
