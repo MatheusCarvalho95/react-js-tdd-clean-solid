@@ -7,6 +7,7 @@ import Styles from "./styles.scss";
 import Context from "../../components/context/form";
 import { Validation } from "@/presentation/protocols/validation";
 import { Authentication } from "@/domain/usecases";
+import { Link } from "react-router-dom";
 
 type Props = {
   validation: Validation;
@@ -73,7 +74,13 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
           >
             Entrar
           </button>
-          <span className={Styles.signUpLink}>Cadastre-se</span>
+          <Link
+            to="/signup"
+            data-testid="register-button"
+            className={Styles.signUpLink}
+          >
+            Cadastre-se
+          </Link>
           <FormStatus />
         </form>
       </Context.Provider>
