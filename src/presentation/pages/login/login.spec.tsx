@@ -1,4 +1,5 @@
 import React from "react";
+import { Router } from "react-router-dom";
 import {
   render,
   RenderResult,
@@ -6,6 +7,7 @@ import {
   cleanup,
   waitFor,
 } from "@testing-library/react";
+import { createMemoryHistory } from "history";
 import "jest-localstorage-mock";
 import Login from "./index";
 import { ValidationStub } from "@/presentation/test/mock-validation";
@@ -20,13 +22,15 @@ type SutTypes = {
 type SutParams = {
   validationError: string;
 };
-
+const history = createMemoryHistory();
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   const authenticationSpy = new AuthenticationSpy();
   validationStub.errorMessage = params?.validationError;
   const sut = render(
-    <Login validation={validationStub} authentication={authenticationSpy} />,
+    <Router history={history}>
+      <Login validation={validationStub} authentication={authenticationSpy} />,
+    </Router>,
   );
   return { sut, authenticationSpy };
 };
@@ -219,5 +223,16 @@ describe("Login component", () => {
       "accessToken",
       authenticationSpy.account.accessToken,
     );
+  });
+
+  test("Should navigate to sign up page", async () => {
+    const { sut } = makeSut();
+    const { getByTestId } = sut;
+
+    const registerButton = getByTestId("register-button");
+
+    fireEvent.click(registerButton);
+    expect(history.length).toBe(2);
+    expect(history.location.pathname).toBe("/signup");
   });
 });
