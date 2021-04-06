@@ -238,8 +238,6 @@ describe("Login component", () => {
     const { sut, authenticationSpy, saveAccessTokenMock } = makeSut();
     const { getByTestId } = sut;
 
-    const form = getByTestId("form");
-
     await simulateValidSubmit(sut);
     expect(saveAccessTokenMock.accessToken).toBe(
       authenticationSpy.account.accessToken,
