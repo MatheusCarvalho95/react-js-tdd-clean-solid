@@ -33,7 +33,7 @@ const SignUp: React.FC = () => {
             className={Styles.submitButton}
             disabled={true}
           >
-            Criar
+            Criar!
           </button>
           <Link
             to="/login"
