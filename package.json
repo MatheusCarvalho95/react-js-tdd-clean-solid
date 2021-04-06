@@ -9,6 +9,7 @@
     "test:watch": "yarn test --watch",
     "test:staged": "yarn test --findRelatedTests",
     "test:ci": "yarn test --coverage",
+    "test:coveralls": "yarn test:ci && coveralls < coverage/lcov.info",
     "cl:j": "jest --clearCache"
   },
   "keywords": [],
