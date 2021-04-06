@@ -1,4 +1,4 @@
-import { FieldValidationSpy } from "../test/intex";
+import { FieldValidationSpy } from "../../test/intex";
 import { ValidationComposite } from "./validation-composite";
 import faker from "faker";
 
