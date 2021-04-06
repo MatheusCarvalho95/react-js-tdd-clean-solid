@@ -1,4 +1,6 @@
-export class SetStorageSpy implements SetStorage {
+import { SetStorage } from "../protocols";
+
+export class SetStorageMock implements SetStorage {
   key: string;
   value: any;
   async set(key: string, value: any): Promise<void> {
