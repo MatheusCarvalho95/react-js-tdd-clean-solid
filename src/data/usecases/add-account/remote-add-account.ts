@@ -1,7 +1,7 @@
 import { AccountModel } from "@/domain/models";
 import { AddAccount, AddAccountParams } from "@/domain/usecases";
 import { HttpPostClient, HttpStatusCode } from "@/data/protocols/http/";
-import { EmailInUseError } from "@/domain/errors";
+import { EmailInUseError, UnexpectedError } from "@/domain/errors";
 
 export class RemoteAddAccount implements AddAccount {
   constructor(
@@ -19,9 +19,11 @@ export class RemoteAddAccount implements AddAccount {
     });
     switch (httpResponse.statusCode) {
       default:
-        return null;
+        throw new UnexpectedError();
       case HttpStatusCode.forbiden:
         throw new EmailInUseError();
+      case HttpStatusCode.ok:
+        return null;
     }
   }
 }
