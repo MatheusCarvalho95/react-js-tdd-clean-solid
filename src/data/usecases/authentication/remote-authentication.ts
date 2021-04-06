@@ -1,7 +1,7 @@
 import {
   Authentication,
   AuthenticationParams,
-} from "@/domain/usecases/authentication";
+} from "@/domain/usecases/authentication/authentication";
 import { HttpPostClient, HttpStatusCode } from "@/data/protocols/http/";
 import {} from "@/data/protocols/http/http-response";
 import { InvalidCredentialsError, UnexpectedError } from "@/domain/errors/";
