@@ -28,7 +28,7 @@ export class RemoteAuthentication implements Authentication {
       case HttpStatusCode.badRequest:
         throw new UnexpectedError();
       case HttpStatusCode.ok:
-        return { accessToken: "" };
+        return httpResponse.body;
     }
   }
 }

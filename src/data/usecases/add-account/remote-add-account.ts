@@ -23,7 +23,7 @@ export class RemoteAddAccount implements AddAccount {
       case HttpStatusCode.forbiden:
         throw new EmailInUseError();
       case HttpStatusCode.ok:
-        return null;
+        return httpResponse.body;
     }
   }
 }
