@@ -2,20 +2,35 @@ import { RequiredFieldValidation } from "..";
 import { EmailValidation } from "../email/email-validation";
 import { MinLenghtValidation } from "../min-length/min-length-validation";
 import { ValidationBuilder as sut } from "./validation-builder";
-
+import faker from "faker";
 describe("ValidationBuilder", () => {
   test("should return RequiredFieldValidation", () => {
-    const validations = sut.field("any_field").required().build();
-    expect(validations).toEqual([new RequiredFieldValidation("any_field")]);
+    const field = faker.database.column();
+    const validations = sut.field(field).required().build();
+    expect(validations).toEqual([new RequiredFieldValidation(field)]);
   });
 
   test("should return EmailValidation", () => {
-    const validations = sut.field("any_field").email().build();
-    expect(validations).toEqual([new EmailValidation("any_field")]);
+    const field = faker.database.column();
+    const validations = sut.field(field).email().build();
+    expect(validations).toEqual([new EmailValidation(field)]);
   });
 
   test("should return EmailValidation", () => {
-    const validations = sut.field("any_field").min(5).build();
-    expect(validations).toEqual([new MinLenghtValidation("any_field", 5)]);
+    const field = faker.database.column();
+    const length = faker.random.number();
+    const validations = sut.field(field).min(length).build();
+    expect(validations).toEqual([new MinLenghtValidation(field, length)]);
+  });
+
+  test("should return list of validations", () => {
+    const field = faker.database.column();
+    const length = faker.random.number();
+    const validations = sut.field(field).required().email().min(length).build();
+    expect(validations).toEqual([
+      new RequiredFieldValidation(field),
+      new EmailValidation(field),
+      new MinLenghtValidation(field, length),
+    ]);
   });
 });
