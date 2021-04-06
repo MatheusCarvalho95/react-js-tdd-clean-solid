@@ -1,4 +1,6 @@
+import { HttpStatusCode } from "@/data/protocols";
 import { HttpPostClientSpy } from "@/data/test";
+import { EmailInUseError, UnexpectedError } from "@/domain/errors";
 import { AccountModel } from "@/domain/models";
 import { mockAddAccountParams } from "@/domain/test";
 import { AddAccountParams } from "@/domain/usecases";
@@ -35,5 +37,14 @@ describe("RemoteAddAccount", () => {
     const addAccountParams = mockAddAccountParams();
     await sut.add(addAccountParams);
     expect(httpPostClientSpy.body).toEqual(addAccountParams);
+  });
+
+  test("Should throw email in use error if HttpPostClient returns 403", async () => {
+    const { sut, httpPostClientSpy } = makeSut();
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.forbiden,
+    };
+    const promisse = sut.add(mockAddAccountParams());
+    await expect(promisse).rejects.toThrow(new EmailInUseError());
   });
 });
