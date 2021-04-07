@@ -4,11 +4,16 @@
       "version": "detact"
     }
   },
-  "extends": ["standard-with-typescript", "plugin:react/recommended"],
-  "plugins": ["react"],
+  "extends": [
+    "standard-with-typescript",
+    "plugin:react/recommended",
+    "plugin:cypress/recommended"
+  ],
+  "plugins": ["react", "cypress"],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
+  "env": { "cypress/globals": true },
   "rules": {
     "@typescript-eslint/restrict-template-expressions": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
