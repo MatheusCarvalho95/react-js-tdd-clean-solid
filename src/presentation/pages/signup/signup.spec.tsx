@@ -217,4 +217,17 @@ describe("SignUp component", () => {
 
     expect(history.location.pathname).toBe("/");
   });
+
+  test("Should show error if SaveAccessToken fails", async () => {
+    const { sut, saveAccessTokenMock } = makeSut();
+    const { getByTestId } = sut;
+    const error = new EmailInUseError();
+    jest
+      .spyOn(saveAccessTokenMock, "save")
+      .mockReturnValueOnce(Promise.reject(error));
+
+    await simulateValidSubmit(sut);
+    FormHelper.testElementText(sut, "main-error", error.message);
+    FormHelper.testChidrenCount(sut, "status-container", 1);
+  });
 });
