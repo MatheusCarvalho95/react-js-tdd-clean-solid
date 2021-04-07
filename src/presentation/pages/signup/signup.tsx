@@ -9,6 +9,7 @@ import Context from "../../components/context/form";
 import { Link, useHistory } from "react-router-dom";
 import { Validation } from "@/presentation/protocols/validation";
 import { AddAccount, SaveAccessToken } from "@/domain/usecases";
+import SubmitButton from "@/presentation/components/submit-button/submit-button";
 type Props = {
   validation: Validation;
   addAccount: AddAccount;
@@ -31,28 +32,33 @@ const SignUp: React.FC<Props> = ({
     email: "",
     password: "",
     passwordConfirmation: "",
+    invalidForm: true,
   });
-  const [buttonDisabledState, setButtonDisabledState] = useState(true);
 
   useEffect(() => {
+    const nameError = validation.validate("name", status.name);
+
+    const emailError = validation.validate("email", status.email);
+
+    const passwordError = validation.validate("password", status.password);
+
+    const passwordConfirmationError = validation.validate(
+      "password",
+      status.passwordConfirmation,
+    );
+
     setStatus({
       ...status,
-      nameError: validation.validate("name", status.name),
-      emailError: validation.validate("email", status.email),
-      passwordError: validation.validate("password", status.password),
-      passwordConfirmationError: validation.validate(
-        "password",
-        status.passwordConfirmation,
-      ),
+      nameError,
+      emailError,
+      passwordError,
+      passwordConfirmationError,
+      invalidForm:
+        !!nameError ||
+        !!emailError ||
+        !!passwordError ||
+        !!passwordConfirmationError,
     });
-    if (
-      status.name &&
-      status.email &&
-      status.password &&
-      status.passwordConfirmation
-    ) {
-      setButtonDisabledState(false);
-    }
   }, [status.name, status.email, status.password, status.passwordConfirmation]);
 
   const handleSubmit = async (
@@ -103,14 +109,8 @@ const SignUp: React.FC<Props> = ({
             name="passwordConfirmation"
             placeholder="Digite sua senha novamente"
           />
-          <button
-            type="submit"
-            data-testid="submitButton"
-            className={Styles.submitButton}
-            disabled={buttonDisabledState}
-          >
-            Criar!
-          </button>
+          <SubmitButton text="Criar!" />
+
           <Link
             to="/login"
             data-testid="login-button"
