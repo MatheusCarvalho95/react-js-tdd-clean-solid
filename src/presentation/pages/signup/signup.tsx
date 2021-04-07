@@ -24,6 +24,7 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
     password: "",
     passwordConfirmation: "",
   });
+  const [buttonDisabledState, setButtonDisabledState] = useState(true);
 
   useEffect(() => {
     setStatus({
@@ -36,6 +37,14 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
         status.passwordConfirmation,
       ),
     });
+    if (
+      status.name &&
+      status.email &&
+      status.password &&
+      status.passwordConfirmation
+    ) {
+      setButtonDisabledState(false);
+    }
   }, [status.name, status.email, status.password, status.passwordConfirmation]);
   return (
     <div className={Styles.signUp}>
@@ -59,7 +68,7 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
             type="submit"
             data-testid="submitButton"
             className={Styles.submitButton}
-            disabled={true}
+            disabled={buttonDisabledState}
           >
             Criar!
           </button>
