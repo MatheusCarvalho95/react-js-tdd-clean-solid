@@ -1,4 +1,10 @@
-import { cleanup, render, RenderResult } from "@testing-library/react";
+import {
+  cleanup,
+  fireEvent,
+  render,
+  RenderResult,
+  waitFor,
+} from "@testing-library/react";
 import React from "react";
 import { Router } from "react-router-dom";
 import SignUp from "./signup";
@@ -21,6 +27,23 @@ const makeSut = (params?: SutParams): SutTypes => {
     </Router>,
   );
   return { sut };
+};
+
+const simulateValidSubmit = async (
+  sut: RenderResult,
+  email = faker.internet.email(),
+  password = faker.internet.password(),
+  name = faker.name.findName(),
+): Promise<void> => {
+  const { getByTestId } = sut;
+  FormHelper.fillField(sut, "name", name);
+  FormHelper.fillField(sut, "email", email);
+  FormHelper.fillField(sut, "password", password);
+  FormHelper.fillField(sut, "passwordConfirmation", password);
+
+  const form = getByTestId("form");
+  fireEvent.submit(form);
+  await waitFor(() => form);
 };
 
 describe("SignUp component", () => {
@@ -111,5 +134,13 @@ describe("SignUp component", () => {
     FormHelper.testButtonIsDisabled(sut, "submitButton", false);
     const submitButton = getByTestId("submitButton") as HTMLButtonElement;
     expect(submitButton.disabled).toBe(false);
+  });
+
+  test("Should show loading if form is submited", async () => {
+    const { sut } = makeSut();
+
+    await simulateValidSubmit(sut);
+
+    FormHelper.testElementToBeTruthy(sut, "spinner");
   });
 });

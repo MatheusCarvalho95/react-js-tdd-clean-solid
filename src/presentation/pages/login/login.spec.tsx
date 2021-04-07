@@ -61,12 +61,6 @@ const simulateValidSubmit = async (
   await waitFor(() => form);
 };
 
-const testElementToBeTruthy = (sut: RenderResult, fieldName: string): void => {
-  const { getByTestId } = sut;
-  const field = getByTestId(fieldName);
-  expect(field).toBeTruthy();
-};
-
 const testElementText = (
   sut: RenderResult,
   fieldName: string,
@@ -144,7 +138,7 @@ describe("Login component", () => {
 
     await simulateValidSubmit(sut);
 
-    testElementToBeTruthy(sut, "spinner");
+    FormHelper.testElementToBeTruthy(sut, "spinner");
   });
 
   test("Should calll authetication with correct values", async () => {
