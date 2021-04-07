@@ -9,10 +9,11 @@ import React from "react";
 import { Router } from "react-router-dom";
 import SignUp from "./signup";
 import { createMemoryHistory } from "history";
-import { FormHelper, ValidationStub } from "@/presentation/test";
+import { AddAccountSpy, FormHelper, ValidationStub } from "@/presentation/test";
 import faker from "faker";
 type SutTypes = {
   sut: RenderResult;
+  addAccountSpy: AddAccountSpy;
 };
 type SutParams = {
   validationError: string;
@@ -20,13 +21,14 @@ type SutParams = {
 const history = createMemoryHistory({ initialEntries: ["/signup"] });
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
+  const addAccountSpy = new AddAccountSpy();
   validationStub.errorMessage = params?.validationError;
   const sut = render(
     <Router history={history}>
-      <SignUp validation={validationStub} />,
+      <SignUp validation={validationStub} addAccount={addAccountSpy} />,
     </Router>,
   );
-  return { sut };
+  return { sut, addAccountSpy };
 };
 
 const simulateValidSubmit = async (
@@ -142,5 +144,22 @@ describe("SignUp component", () => {
     await simulateValidSubmit(sut);
 
     FormHelper.testElementToBeTruthy(sut, "spinner");
+  });
+
+  test("Should calll AddAccount with correct values", async () => {
+    const { sut, addAccountSpy } = makeSut();
+
+    const name = faker.name.findName();
+    const email = faker.internet.email();
+    const password = faker.internet.password();
+
+    await simulateValidSubmit(sut, email, password, name);
+
+    expect(addAccountSpy.params).toEqual({
+      name,
+      email,
+      password,
+      passwordConfirmation: password,
+    });
   });
 });
