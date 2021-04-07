@@ -31,10 +31,18 @@ const Login: React.FC<Props> = ({
   });
 
   useEffect(() => {
+    const { email, password } = status;
+
+    const formData = { email, password };
+
+    const emailError = validation.validate("email", formData);
+
+    const passwordError = validation.validate("password", formData);
+
     setStatus({
       ...status,
-      emailError: validation.validate("email", status.email),
-      passwordError: validation.validate("password", status.password),
+      emailError,
+      passwordError,
     });
   }, [status.email, status.password]);
 
