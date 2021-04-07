@@ -8,10 +8,12 @@ import Context from "../../components/context/form";
 
 import { Link, useHistory } from "react-router-dom";
 import { Validation } from "@/presentation/protocols/validation";
+import { AddAccount } from "@/domain/usecases";
 type Props = {
   validation: Validation;
+  addAccount: AddAccount;
 };
-const SignUp: React.FC<Props> = ({ validation }: Props) => {
+const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
   const [status, setStatus] = useState({
     isLoading: false,
     nameError: "",
@@ -60,6 +62,12 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
         !status.passwordConfirmationError
       ) {
         setStatus({ ...status, isLoading: true });
+        await addAccount.add({
+          name: status.name,
+          email: status.email,
+          password: status.password,
+          passwordConfirmation: status.passwordConfirmation,
+        });
       }
     } catch (error) {
       setStatus({ ...status, isLoading: false, errorMessage: error.message });
