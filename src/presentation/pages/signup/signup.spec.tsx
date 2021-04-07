@@ -69,4 +69,29 @@ describe("SignUp component", () => {
     FormHelper.fillField(sut, "passwordConfirmation");
     FormHelper.testStatusField(sut, "passwordConfirmation", validationError);
   });
+  test("Should valid email state if validation is success", () => {
+    const { sut } = makeSut();
+
+    FormHelper.fillField(sut, "email");
+    FormHelper.testStatusField(sut, "email");
+  });
+
+  test("Should valid name state if validation is success", () => {
+    const { sut } = makeSut();
+
+    FormHelper.fillField(sut, "name");
+    FormHelper.testStatusField(sut, "name");
+  });
+  test("Should valid password state if validation is success", () => {
+    const { sut } = makeSut();
+
+    FormHelper.fillField(sut, "password");
+    FormHelper.testStatusField(sut, "password");
+  });
+  test("Should valid password confirmation state if validation is success", () => {
+    const { sut } = makeSut();
+
+    FormHelper.fillField(sut, "passwordConfirmation");
+    FormHelper.testStatusField(sut, "passwordConfirmation");
+  });
 });
