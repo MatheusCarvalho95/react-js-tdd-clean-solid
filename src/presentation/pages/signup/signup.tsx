@@ -46,11 +46,34 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
       setButtonDisabledState(false);
     }
   }, [status.name, status.email, status.password, status.passwordConfirmation]);
+
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
+    event.preventDefault();
+    try {
+      if (
+        !status.isLoading &&
+        !status.emailError &&
+        !status.passwordError &&
+        !status.nameError &&
+        !status.passwordConfirmationError
+      ) {
+        setStatus({ ...status, isLoading: true });
+      }
+    } catch (error) {
+      setStatus({ ...status, isLoading: false, errorMessage: error.message });
+    }
+  };
   return (
     <div className={Styles.signUp}>
       <Header />
       <Context.Provider value={{ status, setStatus }}>
-        <form className={Styles.form} onSubmit={() => {}} data-testid="form">
+        <form
+          className={Styles.form}
+          onSubmit={handleSubmit}
+          data-testid="form"
+        >
           <h2>Criar conta</h2>
           <Input type="text" name="name" placeholder="Digite seu nome" />
           <Input type="email" name="email" placeholder="Digite seu email" />

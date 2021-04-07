@@ -43,6 +43,8 @@ export const fillField = (
       value = faker.internet.email();
     } else if (fieldName === "password") {
       value = faker.internet.password();
+    } else if (fieldName === "name") {
+      value = faker.name.findName();
     } else {
       value = faker.random.word();
     }
@@ -53,4 +55,13 @@ export const fillField = (
   fireEvent.input(input, {
     target: { value },
   });
+};
+
+export const testElementToBeTruthy = (
+  sut: RenderResult,
+  fieldName: string,
+): void => {
+  const { getByTestId } = sut;
+  const field = getByTestId(fieldName);
+  expect(field).toBeTruthy();
 };
