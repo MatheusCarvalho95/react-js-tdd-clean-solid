@@ -17,6 +17,7 @@ import {
   SaveAccessTokenMock,
 } from "@/presentation/test";
 import { InvalidCredentialsError } from "@/domain/errors";
+import { fillField } from "@/presentation/test/form-helper";
 
 type SutTypes = {
   sut: RenderResult;
@@ -52,33 +53,12 @@ const simulateValidSubmit = async (
   password = faker.internet.password(),
 ): Promise<void> => {
   const { getByTestId } = sut;
-  fillEmailField(sut, email);
-  fillPasswordField(sut, password);
+  FormHelper.fillField(sut, "email", email);
+  FormHelper.fillField(sut, "password", password);
 
   const form = getByTestId("form");
   fireEvent.submit(form);
   await waitFor(() => form);
-};
-
-const fillEmailField = (
-  sut: RenderResult,
-  email = faker.internet.email(),
-): void => {
-  const { getByTestId } = sut;
-  const emailInput = getByTestId("email");
-  fireEvent.input(emailInput, {
-    target: { value: email },
-  });
-};
-const fillPasswordField = (
-  sut: RenderResult,
-  password = faker.internet.password(),
-): void => {
-  const { getByTestId } = sut;
-  const passwordInput = getByTestId("password");
-  fireEvent.input(passwordInput, {
-    target: { value: password },
-  });
 };
 
 const testElementToBeTruthy = (sut: RenderResult, fieldName: string): void => {
@@ -118,14 +98,14 @@ describe("Login component", () => {
   test("Should show email error message if validation fails", () => {
     const validationError = faker.random.words();
     const { sut } = makeSut({ validationError });
-    fillEmailField(sut);
+    FormHelper.fillField(sut, "email");
     FormHelper.testStatusField(sut, "email", validationError);
   });
 
   test("Should show password error message if validation fails", () => {
     const validationError = faker.random.words();
     const { sut } = makeSut({ validationError });
-    fillPasswordField(sut);
+    FormHelper.fillField(sut, "password");
     FormHelper.testStatusField(sut, "password", validationError);
   });
 
@@ -133,7 +113,7 @@ describe("Login component", () => {
     const { sut } = makeSut();
     const { getByTestId } = sut;
 
-    fillEmailField(sut);
+    FormHelper.fillField(sut, "email");
     FormHelper.testStatusField(sut, "email");
   });
 
@@ -151,8 +131,8 @@ describe("Login component", () => {
   test("Submit button should be enabled if validation is success", () => {
     const { sut } = makeSut();
     const { getByTestId } = sut;
-    fillPasswordField(sut);
-    fillEmailField(sut);
+    FormHelper.fillField(sut, "email");
+    FormHelper.fillField(sut, "password");
 
     FormHelper.testButtonIsDisabled(sut, "submitButton", false);
     const submitButton = getByTestId("submitButton") as HTMLButtonElement;

@@ -36,8 +36,18 @@ export const testStatusField = (
 export const fillField = (
   sut: RenderResult,
   fieldName: string,
-  value = faker.random.word(),
+  value?: string,
 ): void => {
+  if (!value) {
+    if (fieldName === "email") {
+      value = faker.internet.email();
+    } else if (fieldName === "password") {
+      value = faker.internet.password();
+    } else {
+      value = faker.random.word();
+    }
+  }
+
   const { getByTestId } = sut;
   const input = getByTestId(fieldName);
   fireEvent.input(input, {
