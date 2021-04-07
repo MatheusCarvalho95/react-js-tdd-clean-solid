@@ -3,6 +3,7 @@ import React from "react";
 import { Router } from "react-router-dom";
 import SignUp from "./signup";
 import { createMemoryHistory } from "history";
+import { FormHelper } from "@/presentation/test";
 type SutTypes = {
   sut: RenderResult;
 };
@@ -16,38 +17,6 @@ const makeSut = (): SutTypes => {
   return { sut };
 };
 
-const testChidrenCount = (
-  sut: RenderResult,
-  fieldName: string,
-  count: number,
-): void => {
-  const { getByTestId } = sut;
-  const status = getByTestId(fieldName);
-  expect(status.childElementCount).toBe(count);
-};
-
-const testButtonIsDisabled = (
-  sut: RenderResult,
-  fieldName: string,
-  isDisabled: boolean,
-): void => {
-  const { getByTestId } = sut;
-
-  const button = getByTestId(fieldName) as HTMLButtonElement;
-  expect(button.disabled).toBe(isDisabled);
-};
-
-const testStatusField = (
-  sut: RenderResult,
-  fieldName: string,
-  validationError?: string,
-): void => {
-  const { getByTestId } = sut;
-  const fieldStatus = getByTestId(`${fieldName}-status`);
-  expect(fieldStatus.title).toBe(validationError || "Ok..");
-  expect(fieldStatus.textContent).toBe(validationError ? "🔴" : "🟢");
-};
-
 describe("SignUp component", () => {
   afterEach(cleanup);
 
@@ -56,16 +25,16 @@ describe("SignUp component", () => {
     const { getByTestId } = sut;
     const validationError = "Campo obrigatório";
 
-    testChidrenCount(sut, "status-container", 0);
+    FormHelper.testChidrenCount(sut, "status-container", 0);
 
-    testButtonIsDisabled(sut, "submitButton", true);
+    FormHelper.testButtonIsDisabled(sut, "submitButton", true);
 
-    testStatusField(sut, "name", validationError);
+    FormHelper.testStatusField(sut, "name", validationError);
 
-    testStatusField(sut, "email", validationError);
+    FormHelper.testStatusField(sut, "email", validationError);
 
-    testStatusField(sut, "password", validationError);
+    FormHelper.testStatusField(sut, "password", validationError);
 
-    testStatusField(sut, "passwordConfirmation", validationError);
+    FormHelper.testStatusField(sut, "passwordConfirmation", validationError);
   });
 });
