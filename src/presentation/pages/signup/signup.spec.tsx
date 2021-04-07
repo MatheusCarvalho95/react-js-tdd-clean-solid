@@ -39,7 +39,13 @@ describe("SignUp component", () => {
 
     FormHelper.testStatusField(sut, "email", validationError);
 
-    FormHelper.testStatusField(sut, "password", "Campo obrigatório");
+    FormHelper.testStatusField(sut, "password", validationError);
+
+    FormHelper.testStatusField(
+      sut,
+      "passwordConfirmation",
+      "Campo obrigatório",
+    );
 
     FormHelper.testStatusField(
       sut,
@@ -60,5 +66,11 @@ describe("SignUp component", () => {
     const { sut } = makeSut({ validationError });
     FormHelper.fillField(sut, "email");
     FormHelper.testStatusField(sut, "email", validationError);
+  });
+  test("Should show password error message if validation fails", () => {
+    const validationError = faker.random.words();
+    const { sut } = makeSut({ validationError });
+    FormHelper.fillField(sut, "password");
+    FormHelper.testStatusField(sut, "password", validationError);
   });
 });
