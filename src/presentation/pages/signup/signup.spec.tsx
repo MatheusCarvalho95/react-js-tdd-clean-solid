@@ -230,4 +230,17 @@ describe("SignUp component", () => {
     FormHelper.testElementText(sut, "main-error", error.message);
     FormHelper.testChidrenCount(sut, "status-container", 1);
   });
+
+  test("Should navigate to login page", async () => {
+    const { sut } = makeSut();
+    const { getByTestId } = sut;
+
+    const registerButton = getByTestId("login-button");
+
+    fireEvent.click(registerButton);
+
+    expect(history.length).toBe(2);
+
+    expect(history.location.pathname).toBe("/login");
+  });
 });
