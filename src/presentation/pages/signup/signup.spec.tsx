@@ -57,18 +57,21 @@ describe("SignUp component", () => {
     FormHelper.fillField(sut, "email");
     FormHelper.testStatusField(sut, "email", validationError);
   });
+
   test("Should show password error message if validation fails", () => {
     const validationError = faker.random.words();
     const { sut } = makeSut({ validationError });
     FormHelper.fillField(sut, "password");
     FormHelper.testStatusField(sut, "password", validationError);
   });
+
   test("Should show passwordConfirmation error message if validation fails", () => {
     const validationError = faker.random.words();
     const { sut } = makeSut({ validationError });
     FormHelper.fillField(sut, "passwordConfirmation");
     FormHelper.testStatusField(sut, "passwordConfirmation", validationError);
   });
+
   test("Should valid email state if validation is success", () => {
     const { sut } = makeSut();
 
@@ -82,16 +85,31 @@ describe("SignUp component", () => {
     FormHelper.fillField(sut, "name");
     FormHelper.testStatusField(sut, "name");
   });
+
   test("Should valid password state if validation is success", () => {
     const { sut } = makeSut();
 
     FormHelper.fillField(sut, "password");
     FormHelper.testStatusField(sut, "password");
   });
+
   test("Should valid password confirmation state if validation is success", () => {
     const { sut } = makeSut();
 
     FormHelper.fillField(sut, "passwordConfirmation");
     FormHelper.testStatusField(sut, "passwordConfirmation");
+  });
+
+  test("Submit button should be enabled if validation is success", () => {
+    const { sut } = makeSut();
+    const { getByTestId } = sut;
+    FormHelper.fillField(sut, "name");
+    FormHelper.fillField(sut, "email");
+    FormHelper.fillField(sut, "password");
+    FormHelper.fillField(sut, "passwordConfirmation");
+
+    FormHelper.testButtonIsDisabled(sut, "submitButton", false);
+    const submitButton = getByTestId("submitButton") as HTMLButtonElement;
+    expect(submitButton.disabled).toBe(false);
   });
 });
