@@ -17,11 +17,12 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
     nameError: "",
     emailError: "",
     passwordError: "",
-    passwordConfirmationError: "Campo obrigatório",
+    passwordConfirmationError: "",
     errorMessage: "",
     name: "",
     email: "",
     password: "",
+    passwordConfirmation: "",
   });
 
   useEffect(() => {
@@ -30,8 +31,12 @@ const SignUp: React.FC<Props> = ({ validation }: Props) => {
       nameError: validation.validate("name", status.name),
       emailError: validation.validate("email", status.email),
       passwordError: validation.validate("password", status.password),
+      passwordConfirmationError: validation.validate(
+        "password",
+        status.passwordConfirmation,
+      ),
     });
-  }, [status.name, status.email, status.password]);
+  }, [status.name, status.email, status.password, status.passwordConfirmation]);
   return (
     <div className={Styles.signUp}>
       <Header />
