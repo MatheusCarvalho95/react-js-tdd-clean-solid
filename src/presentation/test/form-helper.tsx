@@ -65,3 +65,14 @@ export const testElementToBeTruthy = (
   const field = getByTestId(fieldName);
   expect(field).toBeTruthy();
 };
+
+export const testElementText = (
+  sut: RenderResult,
+  fieldName: string,
+  text: string,
+): void => {
+  const { getByTestId } = sut;
+
+  const filed = getByTestId(fieldName);
+  expect(filed.textContent).toBe(text);
+};

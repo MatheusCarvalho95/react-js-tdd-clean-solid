@@ -61,17 +61,6 @@ const simulateValidSubmit = async (
   await waitFor(() => form);
 };
 
-const testElementText = (
-  sut: RenderResult,
-  fieldName: string,
-  text: string,
-): void => {
-  const { getByTestId } = sut;
-
-  const filed = getByTestId(fieldName);
-  expect(filed.textContent).toBe(text);
-};
-
 describe("Login component", () => {
   afterEach(cleanup);
 
@@ -181,7 +170,7 @@ describe("Login component", () => {
       .mockReturnValueOnce(Promise.reject(error));
 
     await simulateValidSubmit(sut);
-    testElementText(sut, "main-error", error.message);
+    FormHelper.testElementText(sut, "main-error", error.message);
     FormHelper.testChidrenCount(sut, "status-container", 1);
   });
 
@@ -208,7 +197,7 @@ describe("Login component", () => {
       .mockReturnValueOnce(Promise.reject(error));
 
     await simulateValidSubmit(sut);
-    testElementText(sut, "main-error", error.message);
+    FormHelper.testElementText(sut, "main-error", error.message);
     FormHelper.testChidrenCount(sut, "status-container", 1);
   });
 

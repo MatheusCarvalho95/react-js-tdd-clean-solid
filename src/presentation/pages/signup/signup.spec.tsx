@@ -11,6 +11,7 @@ import SignUp from "./signup";
 import { createMemoryHistory } from "history";
 import { AddAccountSpy, FormHelper, ValidationStub } from "@/presentation/test";
 import faker from "faker";
+import { EmailInUseError, InvalidCredentialsError } from "@/domain/errors";
 type SutTypes = {
   sut: RenderResult;
   addAccountSpy: AddAccountSpy;
@@ -178,5 +179,16 @@ describe("SignUp component", () => {
     await simulateValidSubmit(sut);
 
     expect(addAccountSpy.callsCount).toBe(0);
+  });
+
+  test("Should show error if authentication fails", async () => {
+    const { sut, addAccountSpy } = makeSut();
+    const { getByTestId } = sut;
+    const error = new EmailInUseError();
+    jest.spyOn(addAccountSpy, "add").mockRejectedValueOnce(error);
+
+    await simulateValidSubmit(sut);
+    FormHelper.testElementText(sut, "main-error", error.message);
+    FormHelper.testChidrenCount(sut, "status-container", 1);
   });
 });
