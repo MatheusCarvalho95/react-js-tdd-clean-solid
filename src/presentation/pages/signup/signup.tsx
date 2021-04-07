@@ -7,8 +7,11 @@ import Styles from "./signup-styles.scss";
 import Context from "../../components/context/form";
 
 import { Link, useHistory } from "react-router-dom";
-
-const SignUp: React.FC = () => {
+import { Validation } from "@/presentation/protocols/validation";
+type Props = {
+  validation: Validation;
+};
+const SignUp: React.FC<Props> = ({ validation }: Props) => {
   const [status, setStatus] = useState({
     isLoading: false,
     nameError: "Campo obrigatório",
@@ -16,11 +19,19 @@ const SignUp: React.FC = () => {
     passwordError: "Campo obrigatório",
     passwordConfirmationError: "Campo obrigatório",
     errorMessage: "",
+    name: "",
   });
+
+  useEffect(() => {
+    setStatus({
+      ...status,
+      nameError: validation.validate("name", status.name),
+    });
+  }, [status.name]);
   return (
     <div className={Styles.signUp}>
       <Header />
-      <Context.Provider value={{ status }}>
+      <Context.Provider value={{ status, setStatus }}>
         <form className={Styles.form} onSubmit={() => {}} data-testid="form">
           <h2>Criar conta</h2>
           <Input type="text" name="name" placeholder="Digite seu nome" />
