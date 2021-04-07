@@ -54,7 +54,6 @@ describe("SignUp component", () => {
   test("Should start with inicial state ", () => {
     const validationError = faker.random.words();
     const { sut } = makeSut({ validationError });
-    const { getByTestId } = sut;
 
     FormHelper.testChidrenCount(sut, "status-container", 0);
 
@@ -161,5 +160,13 @@ describe("SignUp component", () => {
       password,
       passwordConfirmation: password,
     });
+  });
+
+  test("Should call authetication only once", async () => {
+    const { sut, addAccountSpy } = makeSut();
+
+    await simulateValidSubmit(sut);
+    await simulateValidSubmit(sut);
+    expect(addAccountSpy.callsCount).toBe(1);
   });
 });
