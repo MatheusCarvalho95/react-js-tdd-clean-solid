@@ -8,12 +8,18 @@ import Context from "../../components/context/form";
 
 import { Link, useHistory } from "react-router-dom";
 import { Validation } from "@/presentation/protocols/validation";
-import { AddAccount } from "@/domain/usecases";
+import { AddAccount, SaveAccessToken } from "@/domain/usecases";
 type Props = {
   validation: Validation;
   addAccount: AddAccount;
+  saveAccessToken: SaveAccessToken;
 };
-const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
+const SignUp: React.FC<Props> = ({
+  validation,
+  addAccount,
+  saveAccessToken,
+}: Props) => {
+  const history = useHistory();
   const [status, setStatus] = useState({
     isLoading: false,
     nameError: "",
@@ -62,12 +68,14 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
         !status.passwordConfirmationError
       ) {
         setStatus({ ...status, isLoading: true });
-        await addAccount.add({
+        const account = await addAccount.add({
           name: status.name,
           email: status.email,
           password: status.password,
           passwordConfirmation: status.passwordConfirmation,
         });
+        await saveAccessToken.save(account.accessToken);
+        history.replace("/");
       }
     } catch (error) {
       setStatus({ ...status, isLoading: false, errorMessage: error.message });
