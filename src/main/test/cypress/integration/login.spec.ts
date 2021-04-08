@@ -1,5 +1,6 @@
 import faker from "faker";
 
+const baseUrl: string = Cypress.config().baseUrl;
 describe("login", () => {
   beforeEach(() => {
     cy.visit("login");
@@ -54,5 +55,6 @@ describe("login", () => {
       .should("not.exist")
       .getByTestId("main-error")
       .should("exist");
+    cy.url().should("eq", `${baseUrl}/login`);
   });
 });
