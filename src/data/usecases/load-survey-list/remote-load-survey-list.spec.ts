@@ -34,10 +34,19 @@ describe("RemoteLoadSurveyList", () => {
     await expect(promisse).rejects.toThrow(new UnexpectedError());
   });
 
-  test("Should throw unexpected error in use error if HttpGetClient returns 403", async () => {
+  test("Should throw unexpected error in use error if HttpGetClient returns 404", async () => {
     const { sut, httpGetClientSpy } = makeSut();
     httpGetClientSpy.response = {
       statusCode: HttpStatusCode.notFound,
+    };
+    const promisse = sut.loadAll();
+    await expect(promisse).rejects.toThrow(new UnexpectedError());
+  });
+
+  test("Should throw unexpected error in use error if HttpGetClient returns 500", async () => {
+    const { sut, httpGetClientSpy } = makeSut();
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.serverError,
     };
     const promisse = sut.loadAll();
     await expect(promisse).rejects.toThrow(new UnexpectedError());
