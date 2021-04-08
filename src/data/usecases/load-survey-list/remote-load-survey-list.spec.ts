@@ -1,14 +1,17 @@
+import { HttpStatusCode } from "@/data/protocols";
 import { HttpGetClientSpy } from "@/data/test";
+import { UnexpectedError } from "@/domain/errors";
+import { SurveyModel } from "@/domain/models";
 import faker from "faker";
 import { RemoteLoadSurveyList } from "./remote-load-survey-list";
 
 type SutTypes = {
   sut: RemoteLoadSurveyList;
-  httpGetClientSpy: HttpGetClientSpy;
+  httpGetClientSpy: HttpGetClientSpy<SurveyModel[]>;
 };
 
 const makeSut = (url = faker.internet.url()): SutTypes => {
-  const httpGetClientSpy = new HttpGetClientSpy();
+  const httpGetClientSpy = new HttpGetClientSpy<SurveyModel[]>();
   const sut = new RemoteLoadSurveyList(url, httpGetClientSpy);
   return { sut, httpGetClientSpy };
 };
@@ -20,5 +23,14 @@ describe("RemoteLoadSurveyList", () => {
 
     await sut.loadAll();
     expect(httpGetClientSpy.url).toBe(url);
+  });
+
+  test("Should throw unexpected error in use error if HttpGetClient returns 403", async () => {
+    const { sut, httpGetClientSpy } = makeSut();
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.forbiden,
+    };
+    const promisse = sut.loadAll();
+    await expect(promisse).rejects.toThrow(new UnexpectedError());
   });
 });
