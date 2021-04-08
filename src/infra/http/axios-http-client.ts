@@ -8,11 +8,11 @@ import axios from "axios";
 export class AxiosHttpClient implements HttpPostClient<any> {
   async post(params): Promise<HttpResponse<any>> {
     try {
-      const response = await axios.post(params.url, params.body);
+      const axiosResponse = await axios.post(params.url, params.body);
 
       return {
-        statusCode: response.status,
-        body: response.data,
+        statusCode: axiosResponse.status,
+        body: axiosResponse.data,
       };
     } catch (error) {
       return {
