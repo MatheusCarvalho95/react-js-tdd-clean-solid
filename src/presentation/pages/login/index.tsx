@@ -73,6 +73,7 @@ const Login: React.FC<Props> = ({
           className={Styles.form}
           onSubmit={handleSubmit}
           data-testid="form"
+          autoComplete="off"
         >
           <h2>Login</h2>
           <Input type="email" name="email" placeholder="Digite seu email" />

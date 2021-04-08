@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import Styles from "./styles.scss";
 import FormContext from "../context/form";
 type Props = React.DetailedHTMLProps<
@@ -7,11 +7,8 @@ type Props = React.DetailedHTMLProps<
 >;
 
 const Input: React.FC<Props> = (props: Props) => {
-  const enableDataInput = (e: React.FocusEvent<HTMLInputElement>): void => {
-    e.target.readOnly = false;
-  };
   const { status, setStatus } = useContext(FormContext);
-
+  const inputRef = useRef<HTMLInputElement>();
   const error = status[`${props.name}Error`];
 
   const handleOnChange = (e: React.FocusEvent<HTMLInputElement>): void => {
@@ -20,29 +17,32 @@ const Input: React.FC<Props> = (props: Props) => {
       [e?.target?.name]: e?.target?.value,
     });
   };
-  const getStatus = (): string => {
-    return error ? "🔴" : "🟢";
-  };
-
-  const getTitle = (): string => {
-    return error ?? "Ok..";
-  };
 
   return (
     <div className={Styles.inputContainer}>
       <input
         {...props}
+        ref={inputRef}
+        placeholder=" "
         data-testid={`${props.name}`}
         readOnly
-        onFocus={enableDataInput}
+        onFocus={(e) => (e.target.readOnly = false)}
         onChange={handleOnChange}
+        autoComplete="off"
       />
+      <label
+        onClick={() => {
+          inputRef.current.focus();
+        }}
+      >
+        {props.placeholder}
+      </label>
       <span
         data-testid={`${props.name}-status`}
-        title={getTitle()}
+        title={error ?? "Ok.."}
         className={Styles.redDot}
       >
-        {getStatus()}
+        {error ? "🔴" : "🟢"}
       </span>
     </div>
   );
