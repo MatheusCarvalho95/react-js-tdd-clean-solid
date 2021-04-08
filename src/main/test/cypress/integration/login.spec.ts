@@ -27,4 +27,17 @@ describe("login", () => {
     cy.getByTestId("submitButton").should("have.attr", "disabled");
     cy.getByTestId("status-container").should("not.have.descendants");
   });
+
+  it("Shoud present error if form is invalid", () => {
+    cy.getByTestId("email").focus().type(faker.internet.email());
+    cy.getByTestId("email-status")
+      .should("have.attr", "title", "Ok..")
+      .should("contain.text", "🟢");
+    cy.getByTestId("password").focus().type(faker.random.alphaNumeric(6));
+    cy.getByTestId("password-status")
+      .should("have.attr", "title", "Ok..")
+      .should("contain.text", "🟢");
+    cy.getByTestId("submitButton").should("not.have.attr", "disabled");
+    cy.getByTestId("status-container").should("not.have.descendants");
+  });
 });
