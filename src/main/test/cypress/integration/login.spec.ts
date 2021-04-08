@@ -1,3 +1,5 @@
+import faker from "faker";
+
 describe("login", () => {
   beforeEach(() => {
     cy.visit("login");
@@ -8,6 +10,19 @@ describe("login", () => {
       .should("contain.text", "🔴");
     cy.getByTestId("password-status")
       .should("have.attr", "title", "Campo obrigatório")
+      .should("contain.text", "🔴");
+    cy.getByTestId("submitButton").should("have.attr", "disabled");
+    cy.getByTestId("status-container").should("not.have.descendants");
+  });
+
+  it("Shoud present error if form is invalid", () => {
+    cy.getByTestId("email").focus().type(faker.random.word());
+    cy.getByTestId("email-status")
+      .should("have.attr", "title", "Dados inválidos")
+      .should("contain.text", "🔴");
+    cy.getByTestId("password").focus().type(faker.random.alphaNumeric(3));
+    cy.getByTestId("password-status")
+      .should("have.attr", "title", "Dados inválidos")
       .should("contain.text", "🔴");
     cy.getByTestId("submitButton").should("have.attr", "disabled");
     cy.getByTestId("status-container").should("not.have.descendants");
