@@ -1,4 +1,5 @@
 import {
+  HttpGetParams,
   HttpPostClient,
   HttpPostParams,
   HttpResponse,
@@ -20,5 +21,21 @@ export class AxiosHttpClient implements HttpPostClient<any> {
         body: error.response.data,
       };
     }
+  }
+
+  async get(params: HttpGetParams): Promise<void> {
+    try {
+      await axios.get(params.url);
+// const axiosResponse = 
+    //   return {
+    //     statusCode: axiosResponse.status,
+    //     body: axiosResponse.data,
+    //   };
+    // } catch (error) {
+    //   return {
+    //     statusCode: error.response.status,
+    //     body: error.response.data,
+    //   };
+    // }
   }
 }
