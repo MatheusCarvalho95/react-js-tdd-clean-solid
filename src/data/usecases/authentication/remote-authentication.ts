@@ -9,10 +9,7 @@ import { AccountModel } from "@/domain/models/";
 export class RemoteAuthentication implements Authentication {
   constructor(
     private readonly url: string,
-    private readonly HttpPostClient: HttpPostClient<
-      AuthenticationParams,
-      AccountModel
-    >,
+    private readonly HttpPostClient: HttpPostClient<AccountModel>,
   ) {}
 
   async auth(params: AuthenticationParams): Promise<AccountModel> {

@@ -19,8 +19,5 @@ module.exports = {
     "@/(.*)": "<rootDir>/src/$1",
     "\\.scss$": "identity-obj-proxy",
   },
-  testIgnorePatterns: [
-    "<rootDir>/node_modules",
-    "<rootDir>/src/main/test/cypress",
-  ],
+  testIgnorePatterns: ["<rootDir>/node_modules"],
 };

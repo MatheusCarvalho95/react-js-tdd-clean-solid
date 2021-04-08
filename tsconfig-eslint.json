@@ -1,4 +1,0 @@
-{
-  "extends": "./tesconfig.json",
-  "exclude": []
-}
