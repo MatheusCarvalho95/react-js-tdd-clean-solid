@@ -19,10 +19,15 @@ const Input: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <div className={Styles.inputContainer}>
+    <div
+      data-testid={`${props.name}-wrap`}
+      className={Styles.inputContainer}
+      data-status={error ? "invalid" : "valid"}
+    >
       <input
         {...props}
         ref={inputRef}
+        title={error}
         placeholder=" "
         data-testid={`${props.name}`}
         readOnly
@@ -31,19 +36,14 @@ const Input: React.FC<Props> = (props: Props) => {
         autoComplete="off"
       />
       <label
+        title={error}
+        data-testid={`${props.name}-label`}
         onClick={() => {
           inputRef.current.focus();
         }}
       >
         {props.placeholder}
       </label>
-      <span
-        data-testid={`${props.name}-status`}
-        title={error ?? "Ok.."}
-        className={Styles.redDot}
-      >
-        {error ? "🔴" : "🟢"}
-      </span>
     </div>
   );
 };
