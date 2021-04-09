@@ -28,24 +28,7 @@ const SurveyList: FC = () => {
             </div>
             <footer>Ver Resultados</footer>
           </li>
-          <li>
-            <div className={Styles.surveyContent}>
-              <Icon iconName={IconName.thumbsUp} className={Styles.iconWrap} />
-              <time>
-                <span className={Styles.day}>31</span>
-                <span className={Styles.month}>10</span>
-                <span className={Styles.year}>2021</span>
-              </time>
-              <p>
-                Pergunta qualquer número dois Lorem ipsum dolor sit amet
-                consectetur adipisicing elit. Perspiciatis minima alias
-                aspernatur nulla voluptate quos harum eum dolore. Reprehenderit
-                aliquam laudantium libero mollitia omnis excepturi rerum,
-                debitis ut voluptatibus numquam.{" "}
-              </p>
-            </div>
-            <footer>Ver Resultados</footer>
-          </li>
+          <li></li>
         </ul>
       </div>
 
