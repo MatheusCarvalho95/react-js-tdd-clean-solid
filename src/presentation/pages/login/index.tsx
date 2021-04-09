@@ -1,25 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Header from "@/presentation/components/login/header";
 import Footer from "@/presentation/components/footer";
 import Input from "@/presentation/components/input";
 import FormStatus from "@/presentation/components/formStatus";
 import Styles from "./styles.scss";
 import Context from "../../components/context/form";
+import ApiContext from "../../components/context/api/api-context";
 import { Validation } from "@/presentation/protocols/validation";
-import { Authentication, UpdateCurrentAccount } from "@/domain/usecases";
+import { Authentication } from "@/domain/usecases";
 import { Link, useHistory } from "react-router-dom";
 
 type Props = {
   validation: Validation;
   authentication: Authentication;
-  updateCurrentAccount: UpdateCurrentAccount;
 };
 
-const Login: React.FC<Props> = ({
-  validation,
-  authentication,
-  updateCurrentAccount: saveAccessToken,
-}: Props) => {
+const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   const history = useHistory();
   const [status, setStatus] = useState({
     isLoading: false,
@@ -29,6 +25,7 @@ const Login: React.FC<Props> = ({
     errorMessage: "",
     password: "",
   });
+  const { setCurrentAccount } = useContext(ApiContext);
 
   useEffect(() => {
     const { email, password } = status;
@@ -57,7 +54,7 @@ const Login: React.FC<Props> = ({
           email: status.email,
           password: status.password,
         });
-        await saveAccessToken.save(account);
+        setCurrentAccount(account);
         history.replace("/");
       }
     } catch (error) {

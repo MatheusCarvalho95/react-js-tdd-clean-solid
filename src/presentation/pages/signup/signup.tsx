@@ -1,26 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Header from "@/presentation/components/login/header";
 import Footer from "@/presentation/components/footer";
 import Input from "@/presentation/components/input";
 import FormStatus from "@/presentation/components/formStatus";
 import Styles from "./signup-styles.scss";
 import Context from "../../components/context/form";
+import ApiContext from "../../components/context/api/api-context";
 
 import { Link, useHistory } from "react-router-dom";
 import { Validation } from "@/presentation/protocols/validation";
-import { AddAccount, UpdateCurrentAccount } from "@/domain/usecases";
+import { AddAccount } from "@/domain/usecases";
 import SubmitButton from "@/presentation/components/submit-button/submit-button";
 type Props = {
   validation: Validation;
   addAccount: AddAccount;
-  updateCurrentAccount: UpdateCurrentAccount;
 };
-const SignUp: React.FC<Props> = ({
-  validation,
-  addAccount,
-  updateCurrentAccount: saveAccessToken,
-}: Props) => {
+const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
   const history = useHistory();
+  const { setCurrentAccount } = useContext(ApiContext);
   const [status, setStatus] = useState({
     isLoading: false,
     nameError: "",
@@ -79,7 +76,7 @@ const SignUp: React.FC<Props> = ({
           password: status.password,
           passwordConfirmation: status.passwordConfirmation,
         });
-        await saveAccessToken.save(account);
+        setCurrentAccount(account);
         history.replace("/");
       }
     } catch (error) {
