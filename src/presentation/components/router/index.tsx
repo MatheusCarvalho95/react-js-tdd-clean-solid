@@ -1,5 +1,4 @@
-import { makeSignUp } from "@/main/factories/pages/signup/signup-factory";
-import { SignUp } from "@/presentation/pages/";
+import { SurveyList } from "@/presentation/pages";
 import React, { FC } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "../../styles/global.scss";
@@ -13,6 +12,7 @@ const Router: FC<Factory> = ({ makeLogin, makeSignUp }: Factory) => {
   return (
     <BrowserRouter>
       <Switch>
+        <Route path="/" exact component={SurveyList} />
         <Route path="/login" exact component={makeLogin} />
         <Route path="/signup" exact component={makeSignUp} />
       </Switch>

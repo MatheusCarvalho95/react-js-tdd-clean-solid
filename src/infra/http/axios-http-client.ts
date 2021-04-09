@@ -2,7 +2,6 @@ import {
   HttpGetClient,
   HttpGetParams,
   HttpPostClient,
-  HttpPostParams,
   HttpResponse,
 } from "@/data/protocols/http";
 import axios from "axios";
