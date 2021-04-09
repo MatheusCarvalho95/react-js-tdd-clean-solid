@@ -1,9 +1,7 @@
 import { SignUp } from "@/presentation/pages";
 import React, { FC } from "react";
-import { makeRemoteAddAccount } from "../../usecases/authentication copy/remote-add-account-factory";
-import { makeRemoteAuthentication } from "../../usecases/authentication/remote-authentication-factory";
-
-import { makeLocalSaveAccessToken } from "../../usecases/save-access-token/local-save-access-token-factory";
+import { makeRemoteAddAccount } from "../../usecases/add-account/remote-add-account-factory";
+import { makeLocalUpdateCurrentAccount } from "../../usecases/update-current-account/local-update-current-account-factory";
 import { makeSignUpValidation } from "./signup-validation-factory";
 
 export const makeSignUp: FC = () => {
@@ -11,7 +9,7 @@ export const makeSignUp: FC = () => {
     <SignUp
       addAccount={makeRemoteAddAccount()}
       validation={makeSignUpValidation()}
-      saveAccessToken={makeLocalSaveAccessToken()}
+      updateCurrentAccount={makeLocalUpdateCurrentAccount()}
     />
   );
 };

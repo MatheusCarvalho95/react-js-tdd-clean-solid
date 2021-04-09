@@ -12,15 +12,15 @@ import { createMemoryHistory } from "history";
 import {
   AddAccountSpy,
   FormHelper,
-  SaveAccessTokenMock,
+  UpdateCurrentAccountMock,
   ValidationStub,
 } from "@/presentation/test";
 import faker from "faker";
-import { EmailInUseError, InvalidCredentialsError } from "@/domain/errors";
+import { EmailInUseError } from "@/domain/errors";
 type SutTypes = {
   sut: RenderResult;
   addAccountSpy: AddAccountSpy;
-  saveAccessTokenMock: SaveAccessTokenMock;
+  updateCurrentAccountMock: UpdateCurrentAccountMock;
 };
 type SutParams = {
   validationError: string;
@@ -29,19 +29,19 @@ const history = createMemoryHistory({ initialEntries: ["/signup"] });
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   const addAccountSpy = new AddAccountSpy();
-  const saveAccessTokenMock = new SaveAccessTokenMock();
+  const updateCurrentAccountMock = new UpdateCurrentAccountMock();
   validationStub.errorMessage = params?.validationError;
   const sut = render(
     <Router history={history}>
       <SignUp
         validation={validationStub}
         addAccount={addAccountSpy}
-        saveAccessToken={saveAccessTokenMock}
+        updateCurrentAccount={updateCurrentAccountMock}
       />
       ,
     </Router>,
   );
-  return { sut, addAccountSpy, saveAccessTokenMock };
+  return { sut, addAccountSpy, updateCurrentAccountMock };
 };
 
 const simulateValidSubmit = async (
@@ -205,13 +205,9 @@ describe("SignUp component", () => {
   });
 
   test("Should call SaveAccessToken to localstorage on success", async () => {
-    const { sut, addAccountSpy, saveAccessTokenMock } = makeSut();
-    const { getByTestId } = sut;
-
+    const { sut, addAccountSpy, updateCurrentAccountMock } = makeSut();
     await simulateValidSubmit(sut);
-    expect(saveAccessTokenMock.accessToken).toBe(
-      addAccountSpy.account.accessToken,
-    );
+    expect(updateCurrentAccountMock.account).toEqual(addAccountSpy.account);
 
     expect(history.length).toBe(1);
 
@@ -219,11 +215,11 @@ describe("SignUp component", () => {
   });
 
   test("Should show error if SaveAccessToken fails", async () => {
-    const { sut, saveAccessTokenMock } = makeSut();
+    const { sut, updateCurrentAccountMock } = makeSut();
     const { getByTestId } = sut;
     const error = new EmailInUseError();
     jest
-      .spyOn(saveAccessTokenMock, "save")
+      .spyOn(updateCurrentAccountMock, "save")
       .mockReturnValueOnce(Promise.reject(error));
 
     await simulateValidSubmit(sut);

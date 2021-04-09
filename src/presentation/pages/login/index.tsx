@@ -6,19 +6,19 @@ import FormStatus from "@/presentation/components/formStatus";
 import Styles from "./styles.scss";
 import Context from "../../components/context/form";
 import { Validation } from "@/presentation/protocols/validation";
-import { Authentication, SaveAccessToken } from "@/domain/usecases";
+import { Authentication, UpdateCurrentAccount } from "@/domain/usecases";
 import { Link, useHistory } from "react-router-dom";
 
 type Props = {
   validation: Validation;
   authentication: Authentication;
-  saveAccessToken: SaveAccessToken;
+  updateCurrentAccount: UpdateCurrentAccount;
 };
 
 const Login: React.FC<Props> = ({
   validation,
   authentication,
-  saveAccessToken,
+  updateCurrentAccount: saveAccessToken,
 }: Props) => {
   const history = useHistory();
   const [status, setStatus] = useState({
@@ -57,7 +57,7 @@ const Login: React.FC<Props> = ({
           email: status.email,
           password: status.password,
         });
-        await saveAccessToken.save(account.accessToken);
+        await saveAccessToken.save(account);
         history.replace("/");
       }
     } catch (error) {
