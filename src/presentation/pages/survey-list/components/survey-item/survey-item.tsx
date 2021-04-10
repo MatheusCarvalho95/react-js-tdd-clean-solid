@@ -5,14 +5,17 @@ import Styles from "./survey-item-styles.scss";
 type Props = {
   survey: SurveyModel;
 };
-const SurveyItem: React.FC<Props> = ({ survey }: Props) => {
+const SurveyItem: React.FC<Props> = (props: Props) => {
+  const { survey } = props;
+  const iconName = survey?.didAnser ? IconName.thumbsUp : IconName.thumbsDown;
+
   return (
     <li className={Styles.itemWrap}>
       <div className={Styles.surveyContent}>
-        <Icon iconName={IconName.thumbsUp} className={Styles.iconWrap} />
+        <Icon iconName={iconName} className={Styles.iconWrap} />
         <time>
           <span data-testid="day" className={Styles.day}>
-            {survey?.date?.getDate()}
+            {survey?.date?.getDate().toString().padStart(2, "0")}
           </span>
           <span data-testid="month" className={Styles.month}>
             {survey?.date
