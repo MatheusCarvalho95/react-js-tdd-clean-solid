@@ -48,8 +48,7 @@ export const fillField = (fieldName: string, value?: string): void => {
 };
 
 export const testElementToBeTruthy = (fieldName: string): void => {
-  const field = screen.getByTestId(fieldName);
-  expect(field).toBeTruthy();
+  expect(screen.queryByTestId(fieldName)).toBeInTheDocument();
 };
 
 export const testElementText = (fieldName: string, text: string): void => {
