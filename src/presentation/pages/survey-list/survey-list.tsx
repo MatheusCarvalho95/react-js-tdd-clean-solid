@@ -10,7 +10,7 @@ const SurveyList: FC = () => {
       <Header />
       <div className={Styles.contentWrap}>
         <h2>Enquetes</h2>
-        <ul>
+        <ul data-testid="survey-list">
           <SurveyItem />
           <SurveyItemEmpty />
         </ul>
