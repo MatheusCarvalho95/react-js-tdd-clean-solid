@@ -1,0 +1,16 @@
+.listWarp {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+@media only screen and (max-width: 650px) {
+  .surveyListWrap {
+    .contentWrap {
+      ul {
+        flex-direction: column;
+      }
+    }
+  }
+}
