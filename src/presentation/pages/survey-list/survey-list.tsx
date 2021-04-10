@@ -12,6 +12,7 @@ const SurveyList: FC<Props> = ({ loadSurveyList }: Props) => {
   const [state, setState] = useState({
     surveys: [] as SurveyModel[],
     error: "",
+    reload: true,
   });
   useEffect(() => {
     (async function () {
@@ -22,7 +23,7 @@ const SurveyList: FC<Props> = ({ loadSurveyList }: Props) => {
         setState({ ...state, error: error.message });
       }
     })();
-  }, []);
+  }, [state.reload]);
   return (
     <div className={Styles.surveyListWrap}>
       <Header />
