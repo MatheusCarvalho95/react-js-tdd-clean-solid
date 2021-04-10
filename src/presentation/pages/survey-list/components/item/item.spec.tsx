@@ -17,7 +17,7 @@ describe("SurveyItem", () => {
     expect(screen.getByTestId("icon")).toHaveProperty("src", IconName.thumbsUp);
     expect(screen.getByTestId("question")).toHaveTextContent(survey.question);
     expect(screen.getByTestId("day")).toHaveTextContent("10");
-    expect(screen.getByTestId("month")).toHaveTextContent("abr");
+    expect(screen.getByTestId("month")).toHaveTextContent("abr" || "Abr");
     expect(screen.getByTestId("year")).toHaveTextContent("2021");
   });
 
@@ -32,7 +32,7 @@ describe("SurveyItem", () => {
     );
     expect(screen.getByTestId("question")).toHaveTextContent(survey.question);
     expect(screen.getByTestId("day")).toHaveTextContent("09");
-    expect(screen.getByTestId("month")).toHaveTextContent("fev");
+    expect(screen.getByTestId("month")).toHaveTextContent("fev" || "Fev");
     expect(screen.getByTestId("year")).toHaveTextContent("2025");
   });
 });
