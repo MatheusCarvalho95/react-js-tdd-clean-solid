@@ -9,6 +9,7 @@ import {
   getCurrentAccountAdapter,
   setCurrentAccountAdapter,
 } from "../adapters";
+import PrivateRoute from "@/presentation/components/private-route/private-route";
 
 const Router: FC = () => {
   return (
@@ -20,7 +21,7 @@ const Router: FC = () => {
     >
       <BrowserRouter>
         <Switch>
-          <Route path="/" exact component={SurveyList} />
+          <PrivateRoute path="/" exact component={SurveyList} />
           <Route path="/login" exact component={makeLogin} />
           <Route path="/signup" exact component={makeSignUp} />
         </Switch>
