@@ -5,12 +5,18 @@ import "../../presentation/styles/global.scss";
 import { makeLogin } from "../factories/pages/login/login-factory";
 import { makeSignUp } from "../factories/pages/signup/signup-factory";
 import ApiContext from "../../presentation/components/context/api/api-context";
-import { setCurrentAccountAdapter } from "../adapters";
+import {
+  getCurrentAccountAdapter,
+  setCurrentAccountAdapter,
+} from "../adapters";
 
 const Router: FC = () => {
   return (
     <ApiContext.Provider
-      value={{ setCurrentAccount: setCurrentAccountAdapter }}
+      value={{
+        setCurrentAccount: setCurrentAccountAdapter,
+        getCurrentAccount: getCurrentAccountAdapter,
+      }}
     >
       <BrowserRouter>
         <Switch>
