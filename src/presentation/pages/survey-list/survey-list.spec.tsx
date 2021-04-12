@@ -1,5 +1,5 @@
 import { UnexpectedError } from "@/domain/errors";
-import { mockSurveyListModel } from "@/domain/test";
+import { mockAccountModel, mockSurveyListModel } from "@/domain/test";
 import { LoadSurveyList } from "@/domain/usecases/load-survey-list";
 import apiContext from "@/presentation/components/context/api/api-context";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
@@ -22,7 +22,12 @@ type SutTypes = {
 const makeSut = (loadSurveyListSpy = new LoadSurveyListSpy()): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ["/"] });
   render(
-    <apiContext.Provider value={{ setCurrentAccount: jest.fn() }}>
+    <apiContext.Provider
+      value={{
+        setCurrentAccount: jest.fn(),
+        getCurrentAccount: () => mockAccountModel(),
+      }}
+    >
       <Router history={history}>
         <SurveyList loadSurveyList={loadSurveyListSpy} />
       </Router>
