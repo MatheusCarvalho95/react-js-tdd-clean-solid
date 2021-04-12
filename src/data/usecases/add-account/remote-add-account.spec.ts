@@ -75,7 +75,7 @@ describe("RemoteAddAccount", () => {
     const httpResult = mockAccountModel();
     httpPostClientSpy.response = {
       statusCode: HttpStatusCode.ok,
-      body: httpResult,
+      data: httpResult,
     };
     const account = await sut.add(mockAddAccountParams());
     await expect(account).toEqual(httpResult);

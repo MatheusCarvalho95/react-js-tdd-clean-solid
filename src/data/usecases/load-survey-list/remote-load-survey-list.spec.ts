@@ -56,7 +56,7 @@ describe("RemoteLoadSurveyList", () => {
     const httpResult = mockRemoteSurveyListModel();
     httpGetClientSpy.response = {
       statusCode: HttpStatusCode.ok,
-      body: httpResult,
+      data: httpResult,
     };
 
     const surveyList = await sut.loadAll();

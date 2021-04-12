@@ -14,12 +14,12 @@ export class AxiosHttpClient
 
       return {
         statusCode: axiosResponse.status,
-        body: axiosResponse.data,
+        data: axiosResponse.data,
       };
     } catch (error) {
       return {
         statusCode: error.response.status,
-        body: error.response.data,
+        data: error.response.data,
       };
     }
   }
