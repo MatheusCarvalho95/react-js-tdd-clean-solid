@@ -1,14 +1,14 @@
 import faker from "faker";
-import { SurveyModel } from "../models";
+import { LoadSurveyList } from "../usecases/load-survey-list";
 
-export const mockSurveyListModel = (): SurveyModel[] => [
+export const mockSurveyListModel = (): LoadSurveyList.Model[] => [
   mockSurveyModel(),
   mockSurveyModel(),
   mockSurveyModel(),
   mockSurveyModel(),
 ];
 
-export const mockSurveyModel = (): SurveyModel => ({
+export const mockSurveyModel = (): LoadSurveyList.Model => ({
   id: faker.random.uuid(),
   question: faker.random.words(10),
   answers: [

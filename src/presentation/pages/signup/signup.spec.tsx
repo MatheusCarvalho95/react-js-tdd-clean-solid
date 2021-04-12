@@ -7,10 +7,10 @@ import { createMemoryHistory } from "history";
 import { AddAccountSpy, FormHelper, ValidationStub } from "@/presentation/test";
 import faker from "faker";
 import { EmailInUseError } from "@/domain/errors";
-import { AccountModel } from "@/domain/models";
+import { AddAccount } from "@/domain/usecases";
 type SutTypes = {
   addAccountSpy: AddAccountSpy;
-  setCurrentAccountMock: (account: AccountModel) => void;
+  setCurrentAccountMock: (account: AddAccount.Model) => void;
 };
 type SutParams = {
   validationError: string;

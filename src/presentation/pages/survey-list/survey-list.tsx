@@ -4,13 +4,12 @@ import Styles from "./survey-list-styles.scss";
 import Header from "@/presentation/components/header/header";
 import { Error, SurveyContext, SurveyListItem } from "./components";
 import { LoadSurveyList } from "@/domain/usecases/load-survey-list";
-import { SurveyModel } from "@/domain/models";
 type Props = {
   loadSurveyList: LoadSurveyList;
 };
 const SurveyList: FC<Props> = ({ loadSurveyList }: Props) => {
   const [state, setState] = useState({
-    surveys: [] as SurveyModel[],
+    surveys: [] as LoadSurveyList.Model[],
     error: "",
     reload: true,
   });
