@@ -34,14 +34,24 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
 
     const emailError = validation.validate("email", formData);
 
+    setStatus((old) => ({
+      ...old,
+      emailError,
+    }));
+  }, [status.email]);
+
+  useEffect(() => {
+    const { email, password } = status;
+
+    const formData = { email, password };
+
     const passwordError = validation.validate("password", formData);
 
-    setStatus({
-      ...status,
-      emailError,
+    setStatus((old) => ({
+      ...old,
       passwordError,
-    });
-  }, [status.email, status.password]);
+    }));
+  }, [status.password]);
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
