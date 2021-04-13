@@ -74,6 +74,6 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
-    "recoil": "0.0.13"
+    "recoil": "0.1.3"
   }
 }
