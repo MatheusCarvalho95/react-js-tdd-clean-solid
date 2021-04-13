@@ -4,3 +4,8 @@ node_js:
 script:
   - eslint 'src/**'
   - yarn run test:coveralls
+build:
+  provider: heroku
+  api-key: $HEROKU_API
+  app: reactjs-tdd-clean-solid
+  skip_cleanup: true
