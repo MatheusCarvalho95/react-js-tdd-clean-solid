@@ -5,6 +5,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, "dist"),
     filename: "main-bundle-[hash].js",
+    publicPath: "/",
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", "scss", "css"],

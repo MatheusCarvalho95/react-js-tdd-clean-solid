@@ -11,6 +11,7 @@ import {
 } from "../adapters";
 import PrivateRoute from "@/presentation/components/private-route/private-route";
 import { makeSurveyList } from "../factories/pages/survey-list/survey-list-factory";
+import { makeSurveyResult } from "../factories/pages/survey-result/survey-result-factory";
 
 const Router: FC = () => {
   return (
@@ -25,7 +26,7 @@ const Router: FC = () => {
           <PrivateRoute path="/" exact component={makeSurveyList} />
           <Route path="/login" exact component={makeLogin} />
           <Route path="/signup" exact component={makeSignUp} />
-          <PrivateRoute path="/survey" exact component={SurveyResult} />
+          <PrivateRoute path="/survey/:id" component={makeSurveyResult} />
         </Switch>
       </BrowserRouter>
     </ApiContext.Provider>
