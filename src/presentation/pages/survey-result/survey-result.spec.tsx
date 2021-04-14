@@ -172,6 +172,46 @@ describe("SurveyResult", () => {
     expect(screen.getByTestId("error")).toHaveTextContent(error.message);
   });
 
+  test("should present survey result data on save result success", async () => {
+    const saveSurveyResultSpy = new SaveSurveyResultSpy();
+    const surveyResult = {
+      ...mockSurveyResultModel(),
+      date: new Date("2018-02-20T00:00:00"),
+    };
+    saveSurveyResultSpy.surveyResult = surveyResult;
+    makeSut({ saveSurveyResultSpy });
+    await waitFor(() => screen.getByTestId("survey-result"));
+    const answersWrap = screen.queryAllByTestId("answer-wrap");
+
+    fireEvent.click(answersWrap[1]);
+    await waitFor(() => screen.getByTestId("survey-result"));
+
+    expect(screen.getByTestId("day")).toHaveTextContent("20");
+    expect(screen.getByTestId("month")).toHaveTextContent("fev");
+    expect(screen.getByTestId("year")).toHaveTextContent("2018");
+    expect(screen.getByTestId("question")).toHaveTextContent(
+      surveyResult.question,
+    );
+    // expect(screen.getByTestId("answers").childElementCount).toBe(2);
+    // expect(answersWrap[0]).toHaveClass("active");
+    // expect(answersWrap[1]).not.toHaveClass("active");
+    // const images = screen.queryAllByTestId("image");
+    // expect(images[0]).toHaveAttribute("src", surveyResult.answers[0].image);
+    // expect(images[0]).toHaveAttribute("alt", surveyResult.answers[0].answer);
+    // expect(images[1]).toBeFalsy();
+    // const answers = screen.queryAllByTestId("answer");
+    // expect(answers[0]).toHaveTextContent(surveyResult.answers[0].answer);
+    // expect(answers[1]).toHaveTextContent(surveyResult.answers[1].answer);
+    // const percents = screen.queryAllByTestId("percent");
+    // expect(percents[0]).toHaveTextContent(
+    //   `${surveyResult.answers[0].percent}%`,
+    // );
+    // expect(percents[1]).toHaveTextContent(
+    //   `${surveyResult.answers[1].percent}%`,
+    // );
+    expect(screen.queryByTestId("loading-screen")).not.toBeInTheDocument();
+  });
+
   //   test("should logout on access denied", async () => {
   //     const loadSurveyResultSpy = new LoadSurveyResultSpy();
   //     jest
