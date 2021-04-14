@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Styles from "./survey-result-styles.scss";
 import Header from "@/presentation/components/header/header";
 import Footer from "../../components/footer";
@@ -8,13 +8,19 @@ import Calendar from "@/presentation/components/calendar/calendar";
 import { LoadSurveyResult } from "@/domain/usecases";
 import Error from "@/presentation/components/error/error";
 
-type Props = {};
-const SurveyResult: FC<Props> = () => {
+type Props = {
+  loadSurveyResult: LoadSurveyResult;
+};
+const SurveyResult: FC<Props> = ({ loadSurveyResult }: Props) => {
   const [state] = useState({
     isLoading: false,
     error: "",
     surveyResult: null as LoadSurveyResult.Model,
   });
+
+  useEffect(() => {
+    loadSurveyResult.load().then().catch();
+  }, []);
   return (
     <>
       <div className={Styles.surveyResultWrap}>
