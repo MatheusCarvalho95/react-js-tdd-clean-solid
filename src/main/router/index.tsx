@@ -1,4 +1,4 @@
-import { SurveyList } from "@/presentation/pages";
+import { SurveyResult } from "@/presentation/pages";
 import React, { FC } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "../../presentation/styles/global.scss";
@@ -25,6 +25,7 @@ const Router: FC = () => {
           <PrivateRoute path="/" exact component={makeSurveyList} />
           <Route path="/login" exact component={makeLogin} />
           <Route path="/signup" exact component={makeSignUp} />
+          <PrivateRoute path="/survey" exact component={SurveyResult} />
         </Switch>
       </BrowserRouter>
     </ApiContext.Provider>
