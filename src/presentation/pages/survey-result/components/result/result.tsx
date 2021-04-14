@@ -18,9 +18,9 @@ const Result: FC<Props> = ({ surveyResult }: Props) => {
       </hgroup>
       <FlipMove data-testid="answers" className={Styles.answersList}>
         {surveyResult.answers.map((item) => (
-          <>
-            <Answer key={item.answer} answer={item} />
-          </>
+          <div key={item.answer}>
+            <Answer answer={item} />
+          </div>
         ))}
       </FlipMove>
       <button
