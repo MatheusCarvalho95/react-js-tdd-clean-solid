@@ -19,7 +19,12 @@ const SurveyResult: FC<Props> = ({
   saveSurveyResult,
 }: Props) => {
   const handleError = useErrorHandler((error: Error) => {
-    setState((old) => ({ ...old, error: error.message, surveyResult: null }));
+    setState((old) => ({
+      ...old,
+      error: error.message,
+      surveyResult: null,
+      isLoading: false,
+    }));
   });
   const [state, setState] = useState({
     isLoading: false,

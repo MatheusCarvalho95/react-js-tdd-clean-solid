@@ -156,6 +156,22 @@ describe("SurveyResult", () => {
     await waitFor(() => screen.queryByTestId("survey-result"));
   });
 
+  test("should render error on failure to save", async () => {
+    const error = new UnexpectedError();
+    const saveSurveyResultSpy = new SaveSurveyResultSpy();
+    jest.spyOn(saveSurveyResultSpy, "save").mockRejectedValueOnce(error);
+    makeSut({ saveSurveyResultSpy });
+
+    await waitFor(() => screen.queryByTestId("survey-result"));
+
+    const answerWrap = screen.queryAllByTestId("answer-wrap");
+    fireEvent.click(answerWrap[1]);
+    await waitFor(() => screen.queryByTestId("survey-result"));
+    expect(screen.queryByTestId("question")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("loading-screen")).not.toBeInTheDocument();
+    expect(screen.getByTestId("error")).toHaveTextContent(error.message);
+  });
+
   //   test("should logout on access denied", async () => {
   //     const loadSurveyResultSpy = new LoadSurveyResultSpy();
   //     jest
