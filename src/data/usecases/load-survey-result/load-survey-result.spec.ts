@@ -16,7 +16,7 @@ const makeSut = (url = faker.internet.url()): SutTypes => {
 };
 
 describe("RemoteLoadSurveyResult", () => {
-  test("should call http get client with correct url", async () => {
+  test("should call http client with correct url", async () => {
     const url = faker.internet.url();
     const { sut, httpClientSpy } = makeSut(url);
 
@@ -29,7 +29,7 @@ describe("RemoteLoadSurveyResult", () => {
     expect(httpClientSpy.method).toBe("get");
   });
 
-  test("Should throw access denied error in use error if HttpGetClient returns 403", async () => {
+  test("Should throw access denied error in use error if HttpClient returns 403", async () => {
     const { sut, httpClientSpy } = makeSut();
     httpClientSpy.response = {
       statusCode: HttpStatusCode.forbiden,
@@ -37,7 +37,7 @@ describe("RemoteLoadSurveyResult", () => {
     const promise = sut.load();
     await expect(promise).rejects.toThrow(new AccessDeniedError());
   });
-  test("Should throw unexpected error in use error if HttpGetClient returns 404", async () => {
+  test("Should throw unexpected error in use error if HttpClient returns 404", async () => {
     const { sut, httpClientSpy } = makeSut();
     httpClientSpy.response = {
       statusCode: HttpStatusCode.notFound,
@@ -46,7 +46,7 @@ describe("RemoteLoadSurveyResult", () => {
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 
-  test("Should throw unexpected error in use error if HttpGetClient returns 500", async () => {
+  test("Should throw unexpected error in use error if HttpClient returns 500", async () => {
     const { sut, httpClientSpy } = makeSut();
     httpClientSpy.response = {
       statusCode: HttpStatusCode.serverError,
