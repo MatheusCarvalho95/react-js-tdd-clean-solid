@@ -8,6 +8,7 @@ import Calendar from "@/presentation/components/calendar/calendar";
 import { LoadSurveyResult } from "@/domain/usecases";
 import Error from "@/presentation/components/error/error";
 import { useErrorHandler } from "@/presentation/hooks";
+import { useHistory } from "react-router";
 
 type Props = {
   loadSurveyResult: LoadSurveyResult;
@@ -31,6 +32,8 @@ const SurveyResult: FC<Props> = ({ loadSurveyResult }: Props) => {
       isLoading: false,
     }));
   };
+
+  const { goBack } = useHistory();
 
   useEffect(() => {
     loadSurveyResult
@@ -75,7 +78,9 @@ const SurveyResult: FC<Props> = ({ loadSurveyResult }: Props) => {
                   </li>
                 ))}
               </FlipMove>
-              <button>Voltar</button>
+              <button data-testid="back-button" onClick={goBack}>
+                Voltar
+              </button>
             </>
           )}
 
