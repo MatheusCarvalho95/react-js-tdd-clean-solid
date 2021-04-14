@@ -4,6 +4,7 @@ import Header from "@/presentation/components/header/header";
 import Footer from "../../components/footer";
 import FlipMove from "react-flip-move";
 import LoadingScreen from "@/presentation/components/loading-screen/loading-screen";
+import Calendar from "@/presentation/components/calendar/calendar";
 
 type Props = {};
 const SurveyResult: FC<Props> = () => {
@@ -12,7 +13,16 @@ const SurveyResult: FC<Props> = () => {
       <div className={Styles.surveyResultWrap}>
         <Header />
         <div className={Styles.contentWrap}>
-          <h2>Survey name Prop</h2>
+          <hgroup>
+            <Calendar date={new Date()} className={Styles.calendarWrap} />
+            <h2>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
+              nostrum, laudantium, commodi expedita molestiae repellendus animi
+              vero eveniet veniam illo neque unde voluptates rerum corrupti
+              quasi qui nihil nobis! Suscipit!
+            </h2>
+          </hgroup>
+
           <FlipMove className={Styles.answersList}>
             <li>
               <img
