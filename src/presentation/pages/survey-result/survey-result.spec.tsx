@@ -119,6 +119,14 @@ describe("SurveyResult", () => {
     expect(history.location.pathname).toBe("/");
   });
 
+  test("should not present loading on active answer click", async () => {
+    makeSut();
+    await waitFor(() => screen.queryByTestId("survey-result"));
+    const answerWrap = screen.queryAllByTestId("answer-wrap");
+    fireEvent.click(answerWrap[0]);
+    expect(screen.queryByTestId("loading-screen")).not.toBeInTheDocument();
+  });
+
   //   test("should logout on access denied", async () => {
   //     const loadSurveyResultSpy = new LoadSurveyResultSpy();
   //     jest
