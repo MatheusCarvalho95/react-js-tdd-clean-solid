@@ -7,11 +7,15 @@ import LoadingScreen from "@/presentation/components/loading-screen/loading-scre
 import Calendar from "@/presentation/components/calendar/calendar";
 import { LoadSurveyResult } from "@/domain/usecases";
 import Error from "@/presentation/components/error/error";
+import { useErrorHandler } from "@/presentation/hooks";
 
 type Props = {
   loadSurveyResult: LoadSurveyResult;
 };
 const SurveyResult: FC<Props> = ({ loadSurveyResult }: Props) => {
+  const handleError = useErrorHandler((error: Error) => {
+    setState((old) => ({ ...old, error: error.message, surveyResult: null }));
+  });
   const [state, setState] = useState({
     isLoading: false,
     error: "",
@@ -22,7 +26,7 @@ const SurveyResult: FC<Props> = ({ loadSurveyResult }: Props) => {
     loadSurveyResult
       .load()
       .then((surveyResult) => setState((old) => ({ ...old, surveyResult })))
-      .catch();
+      .catch(handleError);
   }, []);
   return (
     <>
