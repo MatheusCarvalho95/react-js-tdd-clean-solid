@@ -7,11 +7,17 @@ import { LoadSurveyResult } from "@/domain/usecases";
 import Error from "@/presentation/components/error/error";
 import { useErrorHandler } from "@/presentation/hooks";
 import Result from "./components/result/result";
+import { SurveyResultContext } from "./components";
+import { SaveSurveyResult } from "@/domain/usecases/save-survey-result";
 
 type Props = {
   loadSurveyResult: LoadSurveyResult;
+  saveSurveyResult: SaveSurveyResult;
 };
-const SurveyResult: FC<Props> = ({ loadSurveyResult }: Props) => {
+const SurveyResult: FC<Props> = ({
+  loadSurveyResult,
+  saveSurveyResult,
+}: Props) => {
   const handleError = useErrorHandler((error: Error) => {
     setState((old) => ({ ...old, error: error.message, surveyResult: null }));
   });
@@ -31,6 +37,11 @@ const SurveyResult: FC<Props> = ({ loadSurveyResult }: Props) => {
     }));
   };
 
+  const onAnswer = (answer: string): void => {
+    setState((old) => ({ ...old, isLoading: true }));
+    saveSurveyResult.save({ answer }).then().catch(handleError);
+  };
+
   useEffect(() => {
     loadSurveyResult
       .load()
@@ -41,12 +52,14 @@ const SurveyResult: FC<Props> = ({ loadSurveyResult }: Props) => {
     <>
       <div className={Styles.surveyResultWrap}>
         <Header />
-        <div data-testid="survey-result" className={Styles.contentWrap}>
-          {state.surveyResult && <Result surveyResult={state.surveyResult} />}
+        <SurveyResultContext.Provider value={{ onAnswer }}>
+          <div data-testid="survey-result" className={Styles.contentWrap}>
+            {state.surveyResult && <Result surveyResult={state.surveyResult} />}
 
-          {state.isLoading && <LoadingScreen />}
-          {state.error && <Error error={state.error} reload={reload} />}
-        </div>
+            {state.isLoading && <LoadingScreen />}
+            {state.error && <Error error={state.error} reload={reload} />}
+          </div>
+        </SurveyResultContext.Provider>
         <Footer />
       </div>
     </>
