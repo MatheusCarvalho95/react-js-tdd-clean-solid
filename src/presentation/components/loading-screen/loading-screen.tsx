@@ -5,7 +5,7 @@ type Props = {};
 const LoadingScreen: FC<Props> = () => {
   return (
     <>
-      <div className={Styles.loadingWrap}>
+      <div data-testid="loading-screen" className={Styles.loadingWrap}>
         <div className={Styles.loading}>
           <span>Aguarde...</span>
           <Loading negative={true} />
