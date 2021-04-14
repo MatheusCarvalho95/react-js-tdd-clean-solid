@@ -3,7 +3,7 @@ import Styles from "./survey-result-styles.scss";
 import Header from "@/presentation/components/header/header";
 import Footer from "../../components/footer";
 import FlipMove from "react-flip-move";
-import Loading from "@/presentation/components/loading";
+import LoadingScreen from "@/presentation/components/loading-screen/loading-screen";
 
 type Props = {};
 const SurveyResult: FC<Props> = () => {
@@ -24,12 +24,7 @@ const SurveyResult: FC<Props> = () => {
             </li>
           </FlipMove>
           <button>Voltar</button>
-          <div className={Styles.loadingWrap}>
-            <div className={Styles.loading}>
-              <span>Aguarde...</span>
-              <Loading negative={true} />
-            </div>
-          </div>
+          {false && <LoadingScreen />}
         </div>
         <Footer />
       </div>
