@@ -12,14 +12,17 @@ type Props = {
   loadSurveyResult: LoadSurveyResult;
 };
 const SurveyResult: FC<Props> = ({ loadSurveyResult }: Props) => {
-  const [state] = useState({
+  const [state, setState] = useState({
     isLoading: false,
     error: "",
     surveyResult: null as LoadSurveyResult.Model,
   });
 
   useEffect(() => {
-    loadSurveyResult.load().then().catch();
+    loadSurveyResult
+      .load()
+      .then((surveyResult) => setState((old) => ({ ...old, surveyResult })))
+      .catch();
   }, []);
   return (
     <>
@@ -29,18 +32,34 @@ const SurveyResult: FC<Props> = ({ loadSurveyResult }: Props) => {
           {state.surveyResult && (
             <>
               <hgroup>
-                <Calendar date={new Date()} className={Styles.calendarWrap} />
-                <h2>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Ducimus nostrum, laudantium, ...
-                </h2>
+                <Calendar
+                  date={state.surveyResult.date}
+                  className={Styles.calendarWrap}
+                />
+                <h2 data-testid="question">{state.surveyResult.question}</h2>
               </hgroup>
-              <FlipMove className={Styles.answersList}>
-                <li>
-                  <img src="" alt="" />
-                  <span className={Styles.answer}>Survey answer prop</span>
-                  <span className={Styles.percent}>% prop</span>
-                </li>
+              <FlipMove data-testid="answers" className={Styles.answersList}>
+                {state.surveyResult.answers.map((item) => (
+                  <li
+                    data-testid="answer-wrap"
+                    key={item.answer}
+                    className={item.isCurrentAccountAnswer ? Styles.active : ""}
+                  >
+                    {item.image && (
+                      <img
+                        data-testid="image"
+                        src={item.image}
+                        alt={item.answer}
+                      />
+                    )}
+                    <span data-testid="answer" className={Styles.answer}>
+                      {item.answer}
+                    </span>
+                    <span data-testid="percent" className={Styles.percent}>
+                      {`${item.percent}%`}
+                    </span>
+                  </li>
+                ))}
               </FlipMove>
               <button>Voltar</button>
             </>
