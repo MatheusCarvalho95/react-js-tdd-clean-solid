@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Header from "@/presentation/components/login/header";
 import Footer from "@/presentation/components/footer";
 import Styles from "./signup-styles.scss";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import { Link, useHistory } from "react-router-dom";
 import { Validation } from "@/presentation/protocols/validation";
 import { AddAccount } from "@/domain/usecases";
@@ -16,31 +16,32 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
   const history = useHistory();
   const { setCurrentAccount } = useRecoilValue(currentAccountState);
   const [status, setStatus] = useRecoilState(signUpState);
+  const resetSignUpState = useResetRecoilState(signUpState);
 
-  useEffect(() => {
+  useEffect(() => resetSignUpState(), []);
+  useEffect(() => validate("name"), [status.name]);
+  useEffect(() => validate("email"), [status.email]);
+  useEffect(() => validate("password"), [status.password]);
+  useEffect(() => validate("passwordConfirmation"), [
+    status.passwordConfirmation,
+  ]);
+
+  const validate = (field: string): void => {
     const { name, email, password, passwordConfirmation } = status;
     const formData = { name, email, password, passwordConfirmation };
-    const nameError = validation.validate("name", formData);
-
-    const emailError = validation.validate("email", formData);
-
-    const passwordError = validation.validate("password", formData);
-
-    const passwordConfirmationError = validation.validate("password", formData);
-
-    setStatus({
-      ...status,
-      nameError,
-      emailError,
-      passwordError,
-      passwordConfirmationError,
-      invalidForm:
-        !!nameError ||
-        !!emailError ||
-        !!passwordError ||
-        !!passwordConfirmationError,
-    });
-  }, [status.name, status.email, status.password, status.passwordConfirmation]);
+    setStatus((old) => ({
+      ...old,
+      [`${field}Error`]: validation.validate(field, formData),
+    }));
+    setStatus((old) => ({
+      ...old,
+      isFormInvalid:
+        !!old.nameError ||
+        !!old.emailError ||
+        !!old.passwordError ||
+        !!old.passwordConfirmationError,
+    }));
+  };
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>,

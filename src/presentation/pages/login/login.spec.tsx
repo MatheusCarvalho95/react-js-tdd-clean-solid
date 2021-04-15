@@ -104,17 +104,17 @@ describe("Login component", () => {
     FormHelper.testStatusField("password");
   });
 
-  // test("Submit button should be enabled if validation is success", () => {
-  //   makeSut();
-  //   FormHelper.fillField("email");
-  //   FormHelper.fillField("password");
+  test("Submit button should be enabled if validation is success", () => {
+    makeSut();
+    FormHelper.fillField("email");
+    FormHelper.fillField("password");
 
-  //   FormHelper.testButtonIsDisabled("submitButton", false);
-  //   const submitButton = screen.getByTestId(
-  //     "submitButton",
-  //   ) as HTMLButtonElement;
-  //   expect(submitButton.disabled).toBe(false);
-  // });
+    FormHelper.testButtonIsDisabled("submitButton", false);
+    const submitButton = screen.getByTestId(
+      "submitButton",
+    ) as HTMLButtonElement;
+    expect(submitButton.disabled).toBe(false);
+  });
 
   test("Should show loading if form is submited", async () => {
     makeSut();

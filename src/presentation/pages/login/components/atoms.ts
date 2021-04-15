@@ -9,6 +9,6 @@ export const loginState = atom({
     email: "",
     errorMessage: "",
     password: "",
-    invalidForm: true,
+    isFormInvalid: true,
   },
 });

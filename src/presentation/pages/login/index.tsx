@@ -5,7 +5,7 @@ import Styles from "./styles.scss";
 import { Validation } from "@/presentation/protocols/validation";
 import { Authentication } from "@/domain/usecases";
 import { Link, useHistory } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import { FormStatus, InputBase, loginState, SubmitButton } from "./components";
 import { currentAccountState } from "@/presentation/components/atoms/atoms";
 
@@ -16,49 +16,43 @@ type Props = {
 
 const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   const history = useHistory();
-  const [status, setStatus] = useRecoilState(loginState);
+  const [state, setState] = useRecoilState(loginState);
   const { setCurrentAccount } = useRecoilValue(currentAccountState);
+  const resetLoginState = useResetRecoilState(loginState);
 
-  useEffect(() => {
-    const { email, password } = status;
+  useEffect(() => resetLoginState(), []);
+  useEffect(() => validate("email"), [state.email]);
+  useEffect(() => validate("password"), [state.password]);
 
+  const validate = (field: string): void => {
+    const { email, password } = state;
     const formData = { email, password };
-
-    const emailError = validation.validate("email", formData);
-    setStatus((old) => ({
+    setState((old) => ({
       ...old,
-      emailError,
+      [`${field}Error`]: validation.validate(field, formData),
     }));
-  }, [status.email]);
-
-  useEffect(() => {
-    const { email, password } = status;
-
-    const formData = { email, password };
-
-    const passwordError = validation.validate("password", formData);
-    setStatus((old) => ({
+    setState((old) => ({
       ...old,
-      passwordError,
+      isFormInvalid: !!old.emailError || !!old.passwordError,
     }));
-  }, [status.password]);
+  };
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     event.preventDefault();
     try {
-      if (!status.isLoading && !status.emailError && !status.passwordError) {
-        setStatus({ ...status, isLoading: true });
+      if (!state.isLoading && !state.emailError && !state.passwordError) {
+        setState({ ...state, isLoading: true });
         const account = await authentication.auth({
-          email: status.email,
-          password: status.password,
+          email: state.email,
+          password: state.password,
         });
         setCurrentAccount(account);
         history.replace("/");
       }
     } catch (error) {
-      setStatus({ ...status, isLoading: false, errorMessage: error.message });
+      setState({ ...state, isLoading: false, errorMessage: error.message });
     }
   };
 

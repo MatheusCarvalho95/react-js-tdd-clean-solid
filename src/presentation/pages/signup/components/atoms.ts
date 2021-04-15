@@ -13,6 +13,6 @@ export const signUpState = atom({
     email: "",
     password: "",
     passwordConfirmation: "",
-    invalidForm: true,
+    isFormInvalid: true,
   },
 });
