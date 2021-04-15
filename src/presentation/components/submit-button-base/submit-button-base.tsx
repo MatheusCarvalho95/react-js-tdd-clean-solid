@@ -1,23 +1,22 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import Context from "../context/form";
 import Styles from "./styles.scss";
 
 type Props = {
   text: string;
+  state: any;
 };
 
-const SubmitButton: React.FC<Props> = ({ text }: Props) => {
-  const { status } = useContext(Context);
-
+const SubmitButtonBase: React.FC<Props> = ({ state, text }: Props) => {
   return (
     <button
       type="submit"
       data-testid="submitButton"
       className={Styles.submitButton}
-      disabled={status.invalidForm}
+      disabled={state.invalidForm}
     >
       {text}
     </button>
   );
 };
-export default SubmitButton;
+export default SubmitButtonBase;

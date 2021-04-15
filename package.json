@@ -68,13 +68,13 @@
     "webpack-merge": "^5.7.3"
   },
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "express": "^4.17.1",
     "express-history-api-fallback": "^2.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-flip-move": "^3.0.4",
     "react-router-dom": "^5.2.0",
-    "recoil": "0.0.13"
+    "recoil": "^0.2.0"
   }
 }

@@ -12,24 +12,27 @@ import {
 import PrivateRoute from "@/presentation/components/private-route/private-route";
 import { makeSurveyList } from "../factories/pages/survey-list/survey-list-factory";
 import { makeSurveyResult } from "../factories/pages/survey-result/survey-result-factory";
+import { RecoilRoot } from "recoil";
 
 const Router: FC = () => {
   return (
-    <ApiContext.Provider
-      value={{
-        setCurrentAccount: setCurrentAccountAdapter,
-        getCurrentAccount: getCurrentAccountAdapter,
-      }}
-    >
-      <BrowserRouter>
-        <Switch>
-          <PrivateRoute path="/" exact component={makeSurveyList} />
-          <Route path="/login" exact component={makeLogin} />
-          <Route path="/signup" exact component={makeSignUp} />
-          <PrivateRoute path="/survey/:id" component={makeSurveyResult} />
-        </Switch>
-      </BrowserRouter>
-    </ApiContext.Provider>
+    <RecoilRoot>
+      <ApiContext.Provider
+        value={{
+          setCurrentAccount: setCurrentAccountAdapter,
+          getCurrentAccount: getCurrentAccountAdapter,
+        }}
+      >
+        <BrowserRouter>
+          <Switch>
+            <PrivateRoute path="/" exact component={makeSurveyList} />
+            <Route path="/login" exact component={makeLogin} />
+            <Route path="/signup" exact component={makeSignUp} />
+            <PrivateRoute path="/survey/:id" component={makeSurveyResult} />
+          </Switch>
+        </BrowserRouter>
+      </ApiContext.Provider>
+    </RecoilRoot>
   );
 };
 
