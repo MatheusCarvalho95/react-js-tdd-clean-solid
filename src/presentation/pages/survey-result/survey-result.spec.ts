@@ -1,18 +1,14 @@
-import { AccessDeniedError, UnexpectedError } from "@/domain/errors";
+import { UnexpectedError } from "@/domain/errors";
 import {
   LoadSurveyResultSpy,
-  mockAccountModel,
   mockSurveyResultModel,
   SaveSurveyResultSpy,
 } from "@/domain/test";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import React from "react";
-import { Router } from "react-router-dom";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import SurveyResult from "./survey-result";
 import { createMemoryHistory, MemoryHistory } from "history";
 import { AccountModel } from "@/domain/models";
-import { RecoilRoot } from "recoil";
-import { currentAccountState } from "@/presentation/components/atoms/atoms";
+import { RenderWithHistory } from "@/presentation/test";
 
 type SutTypes = {
   loadSurveyResultSpy: LoadSurveyResultSpy;
@@ -28,27 +24,19 @@ const makeSut = ({
   loadSurveyResultSpy = new LoadSurveyResultSpy(),
   saveSurveyResultSpy = new SaveSurveyResultSpy(),
 }: SutParams = {}): SutTypes => {
-  const setCurrentAccountMock = jest.fn();
   const history = createMemoryHistory({
     initialEntries: ["/", "/survey"],
     initialIndex: 1,
   });
-  const mockedState = {
-    setCurrentAccount: setCurrentAccountMock,
-    getCurrentAccount: () => mockAccountModel(),
-  };
-  render(
-    <RecoilRoot
-      initializeState={({ set }) => set(currentAccountState, mockedState)}
-    >
-      <Router history={history}>
-        <SurveyResult
-          loadSurveyResult={loadSurveyResultSpy}
-          saveSurveyResult={saveSurveyResultSpy}
-        />
-      </Router>
-    </RecoilRoot>,
-  );
+  const { setCurrentAccountMock } = RenderWithHistory({
+    history,
+    Page: () =>
+      SurveyResult({
+        loadSurveyResult: loadSurveyResultSpy,
+        saveSurveyResult: saveSurveyResultSpy,
+      }),
+  });
+
   return {
     loadSurveyResultSpy,
     setCurrentAccountMock,

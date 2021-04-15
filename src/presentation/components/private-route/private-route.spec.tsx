@@ -2,27 +2,19 @@ import { render } from "@testing-library/react";
 import React from "react";
 import PrivateRoute from "./private-route";
 import { createMemoryHistory, MemoryHistory } from "history";
-import { Router } from "react-router-dom";
-import { RecoilRoot } from "recoil";
 import { mockAccountModel } from "@/domain/test";
-import { currentAccountState } from "../atoms/atoms";
+import { RenderWithHistory } from "@/presentation/test";
 type SutTypes = {
   history: MemoryHistory;
 };
 const makeSut = (account = mockAccountModel()): SutTypes => {
-  const mockedState = {
-    getCurrentAccount: () => account,
-  };
   const history = createMemoryHistory({ initialEntries: ["/"] });
-  render(
-    <RecoilRoot
-      initializeState={({ set }) => set(currentAccountState, mockedState)}
-    >
-      <Router history={history}>
-        <PrivateRoute />
-      </Router>
-    </RecoilRoot>,
-  );
+  RenderWithHistory({
+    history,
+    Page: PrivateRoute,
+    account,
+  });
+
   return { history };
 };
 
