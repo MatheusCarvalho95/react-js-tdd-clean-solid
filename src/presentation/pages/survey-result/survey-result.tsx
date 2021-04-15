@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 import Styles from "./survey-result-styles.scss";
 import Header from "@/presentation/components/header/header";
 import Footer from "../../components/footer";
@@ -7,8 +7,9 @@ import { LoadSurveyResult } from "@/domain/usecases";
 import Error from "@/presentation/components/error/error";
 import { useErrorHandler } from "@/presentation/hooks";
 import Result from "./components/result/result";
-import { SurveyResultContext } from "./components";
+import { onSurveyAnswerState, surveyResultState } from "./components";
 import { SaveSurveyResult } from "@/domain/usecases/save-survey-result";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 type Props = {
   loadSurveyResult: LoadSurveyResult;
@@ -26,13 +27,8 @@ const SurveyResult: FC<Props> = ({
       isLoading: false,
     }));
   });
-  const [state, setState] = useState({
-    isLoading: false,
-    error: "",
-    surveyResult: null as LoadSurveyResult.Model,
-    reload: false,
-  });
-
+  const [state, setState] = useRecoilState(surveyResultState);
+  const setOnAnswer = useSetRecoilState(onSurveyAnswerState);
   const reload = (): void => {
     setState((old) => ({
       surveyResult: null,
@@ -41,17 +37,22 @@ const SurveyResult: FC<Props> = ({
       isLoading: false,
     }));
   };
-
+  useEffect(() => {
+    setOnAnswer({ onAnswer });
+  }, []);
   const onAnswer = (answer: string): void => {
-    if (!state.isLoading) {
-      setState((old) => ({ ...old, isLoading: true }));
-      saveSurveyResult
-        .save({ answer })
-        .then((surveyResult) =>
-          setState((old) => ({ ...old, isLoading: false, surveyResult })),
-        )
-        .catch(handleError);
+    if (state.isLoading) {
+      return;
     }
+
+    setState((old) => ({ ...old, isLoading: true }));
+
+    saveSurveyResult
+      .save({ answer })
+      .then((surveyResult) =>
+        setState((old) => ({ ...old, isLoading: false, surveyResult })),
+      )
+      .catch(handleError);
   };
 
   useEffect(() => {
@@ -64,14 +65,12 @@ const SurveyResult: FC<Props> = ({
     <>
       <div className={Styles.surveyResultWrap}>
         <Header />
-        <SurveyResultContext.Provider value={{ onAnswer }}>
-          <div data-testid="survey-result" className={Styles.contentWrap}>
-            {state.surveyResult && <Result surveyResult={state.surveyResult} />}
+        <div data-testid="survey-result" className={Styles.contentWrap}>
+          {state.surveyResult && <Result surveyResult={state.surveyResult} />}
 
-            {state.isLoading && <LoadingScreen />}
-            {state.error && <Error error={state.error} reload={reload} />}
-          </div>
-        </SurveyResultContext.Provider>
+          {state.isLoading && <LoadingScreen />}
+          {state.error && <Error error={state.error} reload={reload} />}
+        </div>
         <Footer />
       </div>
     </>
