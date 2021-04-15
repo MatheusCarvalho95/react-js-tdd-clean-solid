@@ -7,9 +7,9 @@ import { ValidationStub } from "@/presentation/test/mock-validation";
 import faker from "faker";
 import { AuthenticationSpy, FormHelper } from "@/presentation/test";
 import { InvalidCredentialsError } from "@/domain/errors";
-import ApiContext from "../../components/context/api/api-context";
 import { Authentication } from "@/domain/usecases";
 import { RecoilRoot } from "recoil";
+import { currentAccountState } from "@/presentation/components/atoms/atoms";
 
 type SutTypes = {
   authenticationSpy: AuthenticationSpy;
@@ -25,9 +25,16 @@ const makeSut = (params?: SutParams): SutTypes => {
   const authenticationSpy = new AuthenticationSpy();
   const setCurrentAccountMock = jest.fn();
 
+  const mockedState = {
+    setCurrentAccount: setCurrentAccountMock,
+    getCurrentAccount: jest.fn(),
+  };
+
   render(
     <RecoilRoot>
-      <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+      <RecoilRoot
+        initializeState={({ set }) => set(currentAccountState, mockedState)}
+      >
         <Router history={history}>
           <Login
             validation={validationStub}
@@ -35,7 +42,7 @@ const makeSut = (params?: SutParams): SutTypes => {
           />
           ,
         </Router>
-      </ApiContext.Provider>
+      </RecoilRoot>
     </RecoilRoot>,
   );
   return { authenticationSpy, setCurrentAccountMock };

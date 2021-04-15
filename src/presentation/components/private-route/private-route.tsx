@@ -1,9 +1,10 @@
-import React, { FC, memo, useContext } from "react";
+import React, { FC, memo } from "react";
 import { Redirect, Route, RouteProps } from "react-router-dom";
-import apiContext from "../context/api/api-context";
+import { useRecoilValue } from "recoil";
+import { currentAccountState } from "../atoms/atoms";
 
 const PrivateRouter: FC<RouteProps> = (props: RouteProps) => {
-  const { getCurrentAccount } = useContext(apiContext);
+  const { getCurrentAccount } = useRecoilValue(currentAccountState);
   return getCurrentAccount()?.accessToken ? (
     <Route {...props} />
   ) : (

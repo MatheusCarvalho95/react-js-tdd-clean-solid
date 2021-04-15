@@ -3,19 +3,25 @@ import React from "react";
 import PrivateRoute from "./private-route";
 import { createMemoryHistory, MemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import ApiContext from "../context/api/api-context";
+import { RecoilRoot } from "recoil";
 import { mockAccountModel } from "@/domain/test";
+import { currentAccountState } from "../atoms/atoms";
 type SutTypes = {
   history: MemoryHistory;
 };
 const makeSut = (account = mockAccountModel()): SutTypes => {
+  const mockedState = {
+    getCurrentAccount: () => account,
+  };
   const history = createMemoryHistory({ initialEntries: ["/"] });
   render(
-    <ApiContext.Provider value={{ getCurrentAccount: () => account }}>
+    <RecoilRoot
+      initializeState={({ set }) => set(currentAccountState, mockedState)}
+    >
       <Router history={history}>
         <PrivateRoute />
       </Router>
-    </ApiContext.Provider>,
+    </RecoilRoot>,
   );
   return { history };
 };
