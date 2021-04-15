@@ -9,6 +9,8 @@ import SurveyResult from "./survey-result";
 import { createMemoryHistory, MemoryHistory } from "history";
 import { AccountModel } from "@/domain/models";
 import { RenderWithHistory } from "@/presentation/test";
+import { LoadSurveyResult } from "@/domain/usecases";
+import { surveyResultState } from "./components";
 
 type SutTypes = {
   loadSurveyResultSpy: LoadSurveyResultSpy;
@@ -19,10 +21,17 @@ type SutTypes = {
 type SutParams = {
   loadSurveyResultSpy?: LoadSurveyResultSpy;
   saveSurveyResultSpy?: SaveSurveyResultSpy;
+  initalState?: {
+    isLoading: boolean;
+    error: string;
+    surveyResult: LoadSurveyResult.Model;
+    reload: boolean;
+  };
 };
 const makeSut = ({
   loadSurveyResultSpy = new LoadSurveyResultSpy(),
   saveSurveyResultSpy = new SaveSurveyResultSpy(),
+  initalState = null,
 }: SutParams = {}): SutTypes => {
   const history = createMemoryHistory({
     initialEntries: ["/", "/survey"],
@@ -35,6 +44,9 @@ const makeSut = ({
         loadSurveyResult: loadSurveyResultSpy,
         saveSurveyResult: saveSurveyResultSpy,
       }),
+    states: initalState
+      ? [{ atom: surveyResultState, value: initalState }]
+      : [],
   });
 
   return {
@@ -203,18 +215,23 @@ describe("SurveyResult", () => {
   });
 
   test("should prevent multiple answers click", async () => {
-    const { saveSurveyResultSpy } = makeSut();
+    const initalState = {
+      isLoading: true,
+      error: "string",
+      surveyResult: null,
+      reload: false,
+    };
+    const { saveSurveyResultSpy } = makeSut({ initalState });
 
     await waitFor(() => screen.getByTestId("survey-result"));
 
     const answersWrap = screen.queryAllByTestId("answer-wrap");
 
     fireEvent.click(answersWrap[1]);
-    fireEvent.click(answersWrap[0]);
 
     await waitFor(() => screen.getByTestId("survey-result"));
 
-    expect(saveSurveyResultSpy.callsCount).toBe(1);
+    expect(saveSurveyResultSpy.callsCount).toBe(0);
   });
 
   //   test("should logout on access denied", async () => {
